@@ -5,6 +5,9 @@ import os
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///counterlock.db'
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+app.config['SEND_FILE_MAX_AGE_DEFAULT'] = 0
+
 db = SQLAlchemy(app)
 
 # Database Models
@@ -23,8 +26,18 @@ class Counter(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     hero_id = db.Column(db.Integer, db.ForeignKey('hero.id'), nullable=False)
     item_id = db.Column(db.Integer, db.ForeignKey('item.id'), nullable=False)
-    effectiveness = db.Column(db.Integer, nullable=False)  # How well the item counters the hero (1-10)
+    effectiveness = db.Column(db.Float, nullable=False)  # How well the item counters the hero (1-10)
 
+# Initialize database and populate with data
+def init_db():
+    with app.app_context():
+        db.create_all()
+        
+        # Only populate if database is empty
+        if not Hero.query.first():
+            import populate_db  # This will populate the database
+
+# Routes
 @app.route('/')
 def index():
     heroes = Hero.query.all()
@@ -85,8 +98,8 @@ def recommend_items():
     
     return jsonify(rankings)
 
+# Initialize database when starting the app
+init_db()
+
 if __name__ == '__main__':
-    app.config['SEND_FILE_MAX_AGE_DEFAULT'] = 0
-    with app.app_context():
-        db.create_all()
     app.run(host='0.0.0.0', port=int(os.environ.get('PORT', 5000)))
