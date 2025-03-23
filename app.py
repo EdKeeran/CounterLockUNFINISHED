@@ -4,7 +4,13 @@ from datetime import datetime
 import os
 
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///counterlock.db'
+
+# Use SQLite for local development, but store in /tmp for Render deployment
+if os.environ.get('RENDER'):
+    app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:////tmp/counterlock.db'
+else:
+    app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///counterlock.db'
+
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['SEND_FILE_MAX_AGE_DEFAULT'] = 0
 
