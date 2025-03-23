@@ -7,10 +7,10 @@ with app.app_context():
 
     # Add all heroes
     heroes = [
-        "Abrams", "Bebop", "Dynamo", "Grey Talon", "Haze",
-        "Infernus", "Ivy", "Kelvin", "Lady Geist", "Lash",
-        "Mcginnis", "Mo & Krill", "Paradox", "Pocket", "Seven",
-        "Shiv", "Vindicta", "Viscous", "Warden", "Wraith", "Yamato"
+        "Abrams", "Bebop", "Calico", "Dynamo", "Grey Talon", "Haze",
+        "Holliday", "Infernus", "Ivy", "Kelvin", "Lady Geist", "Lash",
+        "Mcginnis", "Mirage", "Mo & Krill", "Paradox", "Pocket", "Seven",
+        "Shiv", "Sinclair", "Vindicta", "Viscous", "Vyper", "Warden", "Wraith", "Yamato"
     ]
     
     # Add heroes to database with image paths
@@ -25,18 +25,41 @@ with app.app_context():
     # Map item names to their categories
     item_categories = {
         'SpiritItems': [
-            'SlowingHex', 'EtherealShift', 'SilenceGlyph', 'Suppressor',
-            'MysticVulnerability', 'Curse', 'Decay', 'Knockdown',
-            'BulletResistShredder', 'MysticBurst', 'MysticReach'
+            'AmmoScavenger', 'ArcaneSurge', 'BoundlessSpirit', 'BulletResistShredder',
+            'ColdFront', 'Curse', 'Decay', 'DivinersKevlar', 'DurationExtender',
+            'EchoShard', 'EscalatingExposure', 'EtherealShift', 'ExtraCharge',
+            'ExtraSpirit', 'ImprovedBurst', 'ImprovedCooldown', 'ImprovedReach',
+            'ImprovedSpirit', 'Infuser', 'Knockdown', 'MagicCarpet', 'MysticBurst',
+            'MysticReach', 'MysticReverb', 'MysticSlow', 'MysticVulnerability',
+            'QuickSilverReload', 'RapidRecharge', 'Refresher', 'SilenceGlyph',
+            'SlowingHex', 'SpiritSnatch', 'SpiritStrike', 'SuperiorCooldown',
+            'SuperiorDuration', 'Suppressor', 'SurgeofPower', 'TormentPulse',
+            'WitheringWhip'
         ],
         'VitalityItems': [
-            'ExtraStamina', 'MetalSkin', 'DebuffReducer', 'RescueBeam',
-            'BulletArmor', 'Unstoppable', 'SpiritArmor', 'DebuffRemover',
-            'ReactiveBarrier', 'ReturnFire', 'ExtraHealth', 'ExtraRegen'
+            'BulletArmor', 'PhantomStrike', 'BulletLifesteal', 'ReactiveBarrier',
+            'Colossus', 'RescueBeam', 'CombatBarrier', 'RestorativeLocket',
+            'DebuffReducer', 'ReturnFire', 'DebuffRemover', 'SiphonBullets',
+            'DivineBarrier', 'SoulRebirth', 'EnchantersBarrier', 'SpiritArmor',
+            'EnduringSpeed', 'SpiritLifesteal', 'EnduringSpirit', 'SprintBoots',
+            'ExtraHealth', 'SuperiorStamina', 'ExtraRegen', 'Unstoppable',
+            'ExtraStamina', 'VeilWalker', 'Fortitude', 'Healbane',
+            'HealingBooster', 'HealingRite', 'HealthNova', 'ImprovedBulletArmor',
+            'ImprovedSpiritArmor', 'Inhibitor', 'Leech', 'Lifestrike',
+            'MajesticLeap', 'MeleeLifesteal', 'MetalSkin'
         ],
         'WeaponItems': [
-            'SlowingBullets', 'MonsterRounds', 'ToxicBullets',
-            'BurstFire', 'LongRange', 'RapidRounds', 'Silencer'
+            'ActiveReload', 'PristineEmblem', 'AlchemicalFire', 'RapidRounds',
+            'BasicMagazine', 'Ricochet', 'ShadowWeave', 'Berserker', 'BurstFire',
+            'CloseQuarters', 'CripplingHeadshot', 'EscalatingResilience',
+            'Sharpshooter', 'Silencer', 'SlowingBullets', 'SoulShredderBullets',
+            'Fleetfoot', 'SpellslingerHeadshot', 'Frenzy', 'SpiritualOverflow',
+            'GlassCannon', 'SwiftStriker', 'HeadHunter', 'TeslaBullets',
+            'HeadshotBooster', 'TitanicMagazine', 'HeroicAura', 'ToxicBullets',
+            'HighVelocityMag', 'VampiricBurst', 'HollowPointWard', 'WarpStone',
+            'HuntersAura', 'IntensifyingMagazine', 'KineticDash', 'LongRange',
+            'LuckyShot', 'MedicBullets', 'MeleeCharge', 'MonsterRounds',
+            'MysticShot', 'PointBlank'
         ]
     }
     
@@ -52,55 +75,104 @@ with app.app_context():
 
     # Counter relationships
     counter_data = [
-        ("Shiv", "ReactiveBarrier", 0.7),
-        ("Shiv", "BurstFire", 0.8),
-        ("Vindicta", "SilenceGlyph", 0.9),
-        ("Vindicta", "SlowingBullets", 0.6),
-        ("Wraith", "ToxicBullets", 0.8),
-        ("Wraith", "EtherealShift", 0.7),
-        ("Yamato", "DebuffReducer", 0.9),
-        ("Yamato", "RescueBeam", 0.6),
-        ("Viscous", "Knockdown", 0.8),
-        ("Viscous", "Curse", 0.7),
-        ("Warden", "DebuffReducer", 0.9),
-        ("Warden", "SpiritArmor", 0.6),
-        ("Mcginnis", "MetalSkin", 0.9),
-        ("Mcginnis", "SilenceGlyph", 0.6),
-        ("Haze", "BulletResistShredder", 0.9),
-        ("Haze", "MysticVulnerability", 0.6),
-        # Additional counters for more variety
-        ("Abrams", "ToxicBullets", 0.8),
+        ("Abrams", "MysticShot", 0.8),
+        ("Abrams", "HealBane", 0.8),
         ("Abrams", "Decay", 0.7),
+        ("Abrams", "ToxicBullets", 0.7),
         ("Bebop", "ReactiveBarrier", 0.9),
         ("Bebop", "DebuffRemover", 0.6),
         ("Dynamo", "Knockdown", 0.8),
         ("Dynamo", "EtherealShift", 0.7),
+        ("Dynamo", "Unstoppable", 0.8),
         ("Grey Talon", "SpiritArmor", 0.9),
         ("Grey Talon", "DebuffReducer", 0.6),
-        ("Infernus", "ToxicBullets", 0.8),
-        ("Infernus", "DebuffRemover", 0.7),
-        ("Ivy", "Knockdown", 0.9),
-        ("Ivy", "SilenceGlyph", 0.6),
-        ("Kelvin", "ExtraStamina", 0.8),
+        ("Grey Talon", "DebuffRemover", 0.8),
+        ("Grey Talon", "EtherealShift", 0.7),
+        ("Haze", "WarpStone", 0.8),
+        ("Haze", "ReturnFire", 0.8),
+        ("Haze", "MetalSkin", 0.7),
+        ("Infernus", "DebuffRemover", 0.8),
+        ("Infernus", "ToxicBullets", 0.7),
+        ("Infernus", "MysticShot", 0.8),
+        ("Infernus", "HealBane", 0.7),
+        ("Infernus", "SlowingHex", 0.7),
+        ("Infernus", "DebuffReducer", 0.8),
+        ("Ivy", "SuperiorStamina", 0.8),
+        ("Ivy", "WarpStone", 0.8),
+        ("Ivy", "SilenceGlyph", 0.7),
+        ("Ivy", "MysticShot", 0.8),
+        ("Ivy", "HealBane", 0.7),
+        ("Ivy", "ToxicBullets", 0.7),
+        ("Ivy", "Knockdown", 0.8),
+        ("Kelvin", "SuperiorStamina", 0.8),
         ("Kelvin", "EtherealShift", 0.7),
-        ("Lady Geist", "SpiritArmor", 0.9),
-        ("Lady Geist", "ToxicBullets", 0.6),
+        ("Kelvin", "MysticShot", 0.8),
+        ("Kelvin", "HealBane", 0.7),
+        ("Kelvin", "ToxicBullets", 0.7),
+        ("Kelvin", "Decay", 0.7),
+        ("Lady Geist", "Silencer", 0.8),
+        ("Lady Geist", "SilenceGlyph", 0.8),
+        ("Lady Geist", "MysticShot", 0.8),
+        ("Lady Geist", "ToxicBullets", 0.7),
+        ("Lady Geist", "HealBane", 0.7),
+        ("Lady Geist", "Decay", 0.7),
+        ("Lady Geist", "SpiritArmor", 0.8),
         ("Lash", "SlowingHex", 0.8),
-        ("Lash", "Knockdown", 0.7),
-        ("Mo & Krill", "ReactiveBarrier", 0.9),
-        ("Mo & Krill", "ToxicBullets", 0.6),
+        ("Lash", "SilenceGlyph", 0.8),
+        ("Lash", "EtherealShift", 0.7),
+        ("Lash", "Knockdown", 0.8),
+        ("Lash", "Unstoppable", 0.7),
+        ("Mcginnis", "SuperiorStamina", 0.8),
+        ("Mcginnis", "MonsterRounds", 0.8),
+        ("Mo & Krill", "SuperiorStamina", 0.8),
+        ("Mo & Krill", "ReactiveBarrier", 0.8),
+        ("Mo & Krill", "ToxicBullets", 0.7),
+        ("Mo & Krill", "Knockdown", 0.8),
+        ("Mo & Krill", "SlowingHex", 0.7),
+        ("Mo & Krill", "MysticShot", 0.8),
+        ("Mo & Krill", "HealBane", 0.7),
         ("Paradox", "ReactiveBarrier", 0.8),
         ("Paradox", "ExtraStamina", 0.7),
+        ("Paradox", "EtherealShift", 0.8),
         ("Pocket", "SpiritArmor", 0.9),
         ("Pocket", "DebuffRemover", 0.6),
+        ("Pocket", "DebuffReducer", 0.8),
+        ("Pocket", "SilenceGlyph", 0.8),
         ("Seven", "Knockdown", 0.8),
-        ("Seven", "ToxicBullets", 0.7)
+        ("Shiv", "MysticShot", 0.8),
+        ("Shiv", "HealBane", 0.8),
+        ("Shiv", "ToxicBullets", 0.7),
+        ("Shiv", "Decay", 0.7),
+        ("Shiv", "DebuffReducer", 0.8),
+        ("Shiv", "DebuffRemover", 0.8),
+        ("Vindicta", "SuperiorStamina", 0.8),
+        ("Vindicta", "DebuffRemover", 0.8),
+        ("Vindicta", "EtherealShift", 0.7),
+        ("Vindicta", "Knockdown", 0.8),
+        ("Viscous", "SuperiorStamina", 0.8),
+        ("Viscous", "SilenceGlyph", 0.8),
+        ("Warden", "SuperiorStamina", 0.8),
+        ("Warden", "DebuffRemover", 0.8),
+        ("Warden", "DebuffReducer", 0.8),
+        ("Warden", "EtherealShift", 0.7),
+        ("Warden", "SlowingHex", 0.7),
+        ("Warden", "MysticShot", 0.8),
+        ("Warden", "HealBane", 0.7),
+        ("Warden", "ToxicBullets", 0.7),
+        ("Warden", "Decay", 0.7),
+        ("Wraith", "ToxicBullets", 0.8),
+        ("Wraith", "EtherealShift", 0.7),
+        ("Wraith", "MetalSkin", 0.8),
+        ("Wraith", "ReturnFire", 0.8),
+        ("Yamato", "DebuffReducer", 0.9),
+        ("Yamato", "RescueBeam", 0.6),
+        ("Yamato", "SilenceGlyph", 0.8)
     ]
 
     for hero_name, item_name, effectiveness in counter_data:
         # Find the hero and item objects
         hero = hero_objects[hero_name]
-        item = item_objects[item_name]
+        item = item_objects.get(item_name)
         
         if hero and item:
             counter = Counter(hero_id=hero.id, item_id=item.id, effectiveness=effectiveness)
