@@ -2,6 +2,7 @@ from flask import Flask, render_template, jsonify, request, url_for
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
 import os
+from sheets_integration import get_hero_items, get_hero_counters
 
 app = Flask(__name__)
 
@@ -32,7 +33,12 @@ class Counter(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     hero_id = db.Column(db.Integer, db.ForeignKey('hero.id'), nullable=False)
     item_id = db.Column(db.Integer, db.ForeignKey('item.id'), nullable=False)
-    effectiveness = db.Column(db.Float, nullable=False)  # How well the item counters the hero (1-10)
+    effectiveness = db.Column(db.Float, nullable=False)
+
+class HeroItems(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    hero_id = db.Column(db.Integer, db.ForeignKey('hero.id'), nullable=False)
+    item_id = db.Column(db.Integer, db.ForeignKey('item.id'), nullable=False)
 
 # Initialize database and populate with data
 def init_db():
@@ -137,63 +143,96 @@ def analyze_teams():
     enemy_team = request.json.get('enemy_team', [])
     friendly_team = request.json.get('friendly_team', [])
     
-    # Get all counters for enemy heroes
-    enemy_counters = Counter.query.filter(Counter.hero_id.in_(enemy_team)).all()
+    print(f"Analyzing teams - Enemy: {enemy_team}, Friendly: {friendly_team}")
+    
+    # Get all heroes
+    heroes = {h.id: h for h in Hero.query.all()}
+    items = {i.name: i for i in Item.query.all()}
+    
+    print(f"Found {len(heroes)} heroes and {len(items)} items in database")
     
     # Organize counters by enemy hero
     enemy_analysis = {}
     for hero_id in enemy_team:
-        hero = Hero.query.get(hero_id)
-        hero_counters = [c for c in enemy_counters if c.hero_id == hero_id]
+        hero = heroes[hero_id]
+        print(f"\nAnalyzing enemy hero: {hero.name}")
         
-        # Get items that counter this hero
+        # Get counter items from Google Sheets
         counter_items = []
-        for counter in hero_counters:
-            item = Item.query.get(counter.item_id)
-            counter_items.append({
-                'id': item.id,
-                'name': item.name,
-                'category': item.category,
-                'effectiveness': counter.effectiveness
-            })
+        sheet_items = get_hero_counters(hero.name)
+        print(f"Found {len(sheet_items)} counter items for {hero.name} in sheet")
         
-        enemy_analysis[hero_id] = {
-            'hero_name': hero.name,
-            'counter_items': sorted(counter_items, key=lambda x: x['effectiveness'], reverse=True)
-        }
-    
-    # Analyze which friendly heroes should buy which items
-    friendly_recommendations = {}
-    for hero_id in friendly_team:
-        hero = Hero.query.get(hero_id)
-        
-        # Get all possible counter items needed
-        needed_items = set()
-        for counters in enemy_analysis.values():
-            for item in counters['counter_items']:
-                needed_items.add(item['id'])
-        
-        # Find which items this hero has high effectiveness with
-        hero_counters = Counter.query.filter_by(hero_id=hero_id).all()
-        hero_items = []
-        for counter in hero_counters:
-            if counter.item_id in needed_items:
-                item = Item.query.get(counter.item_id)
-                hero_items.append({
+        for item_name in sheet_items:
+            if item_name in items:
+                item = items[item_name]
+                # Find other enemy heroes that are also countered by this item
+                other_countered_heroes = []
+                for other_id in enemy_team:
+                    if other_id != hero_id:
+                        other_hero = heroes[other_id]
+                        other_counters = get_hero_counters(other_hero.name)
+                        if item_name in other_counters:
+                            other_countered_heroes.append({
+                                'name': other_hero.name,
+                                'effectiveness': 1.0
+                            })
+                
+                counter_items.append({
                     'id': item.id,
                     'name': item.name,
                     'category': item.category,
-                    'effectiveness': counter.effectiveness
+                    'effectiveness': 1.0,  # Default effectiveness
+                    'also_counters': other_countered_heroes
                 })
         
-        friendly_recommendations[hero_id] = {
+        print(f"Found {len(counter_items)} valid counter items for {hero.name}")
+        enemy_analysis[hero_id] = {
             'hero_name': hero.name,
-            'recommended_items': sorted(hero_items, key=lambda x: x['effectiveness'], reverse=True)
+            'counter_items': sorted(counter_items, key=lambda x: (-len(x['also_counters']), x['name']))
         }
     
+    # Get items for friendly heroes from Google Sheets
+    friendly_analysis = {}
+    for hero_id in friendly_team:
+        hero = heroes[hero_id]
+        print(f"\nAnalyzing friendly hero: {hero.name}")
+        
+        # Get hero's items from Google Sheets
+        hero_items = get_hero_items(hero.name)
+        print(f"Found {len(hero_items)} items for {hero.name} in sheet")
+        items_data = []
+        
+        for item_name in hero_items:
+            if item_name in items:
+                item = items[item_name]
+                # Check which enemies this item counters
+                countered_enemies = []
+                for enemy_id in enemy_team:
+                    enemy = heroes[enemy_id]
+                    if item_name in get_hero_counters(enemy.name):
+                        countered_enemies.append({
+                            'name': enemy.name,
+                            'effectiveness': 1.0  # Default effectiveness
+                        })
+                
+                if countered_enemies:  # Only include items that counter enemies
+                    items_data.append({
+                        'id': item.id,
+                        'name': item.name,
+                        'category': item.category,
+                        'counters': sorted(countered_enemies, key=lambda x: x['name'])
+                    })
+        
+        print(f"Found {len(items_data)} valid items for {hero.name}")
+        friendly_analysis[hero_id] = {
+            'hero_name': hero.name,
+            'items': sorted(items_data, key=lambda x: (-len(x['counters']), x['name']))
+        }
+    
+    print("\nSending analysis response")
     return jsonify({
         'enemy_analysis': enemy_analysis,
-        'friendly_recommendations': friendly_recommendations
+        'friendly_analysis': friendly_analysis
     })
 
 # Initialize database when starting the app
