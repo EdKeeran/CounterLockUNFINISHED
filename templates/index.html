@@ -40,7 +40,7 @@
             color: #ffffff;
         }
         .container {
-            max-width: 1200px;
+            max-width: 1800px;
             margin: 0 auto;
             background-color: rgba(0, 0, 0, 0.8);
             padding: 20px;
@@ -56,11 +56,22 @@
             letter-spacing: 2px;
             text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
         }
-        .team-selection {
+        .main-layout {
             display: grid;
             grid-template-columns: 1fr 1fr;
+            gap: 40px;
+        }
+        .team-column {
+            display: flex;
+            flex-direction: column;
             gap: 20px;
-            margin-bottom: 30px;
+        }
+        .team-column.friendly {
+            border-right: 2px solid rgba(255, 255, 255, 0.1);
+            padding-right: 20px;
+        }
+        .team-column.enemy {
+            padding-left: 20px;
         }
         .team-panel {
             padding: 20px;
@@ -127,57 +138,149 @@
             letter-spacing: 1px;
             text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
         }
-        .recommendations {
+        .analysis-section {
             margin-top: 30px;
         }
-        .item-card {
+        .enemy-analysis, .friendly-analysis {
+            margin-bottom: 30px;
+        }
+        .enemy-analysis h2, .friendly-analysis h2 {
+            color: #ffffff;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+        }
+        .hero-analysis {
+            margin-bottom: 20px;
+            background-color: rgba(0, 0, 0, 0.4);
             padding: 15px;
+            border-radius: 8px;
+        }
+        .hero-analysis-header {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-bottom: 15px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        .hero-portrait {
+            width: 80px;
+            height: 80px;
+            border-radius: 10px;
             margin-bottom: 10px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+            object-fit: cover;
+            background-color: rgba(0, 0, 0, 0.3);
+        }
+        .hero-analysis h3 {
+            margin: 0;
+            font-size: 1.2em;
+            color: #ffffff;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            text-align: center;
+        }
+        .counter-items {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 10px;
+        }
+        .item-card {
+            padding: 12px;
             border-radius: 8px;
             background-color: rgba(0, 0, 0, 0.6);
             display: flex;
-            justify-content: space-between;
             align-items: center;
             border: 1px solid rgba(255, 255, 255, 0.1);
             transition: transform 0.2s ease;
+            gap: 12px;
+            position: relative;
         }
-        .item-card:hover {
-            transform: translateX(10px);
-            background-color: rgba(0, 0, 0, 0.8);
+        .item-tooltip {
+            position: absolute;
+            left: calc(100% + 10px);
+            top: 50%;
+            transform: translateY(-50%);
+            background-color: rgba(0, 0, 0, 0.95);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 8px;
+            padding: 12px;
+            min-width: 200px;
+            z-index: 1000;
+            display: none;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+        }
+        .item-card:hover .item-tooltip {
+            display: block;
+        }
+        .tooltip-title {
+            font-size: 0.9em;
+            color: rgba(255, 255, 255, 0.7);
+            margin-bottom: 8px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            padding-bottom: 4px;
+        }
+        .countered-hero {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 6px;
+            padding: 4px;
+            border-radius: 4px;
+            background-color: rgba(255, 255, 255, 0.05);
+        }
+        .countered-hero:last-child {
+            margin-bottom: 0;
+        }
+        .countered-hero img {
+            width: 24px;
+            height: 24px;
+            border-radius: 4px;
+            object-fit: cover;
+        }
+        .countered-hero span {
+            color: #ffffff;
+            font-size: 0.9em;
+        }
+        .item-image {
+            width: 40px;
+            height: 40px;
+            border-radius: 6px;
+            object-fit: cover;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            background-color: rgba(0, 0, 0, 0.3);
         }
         .item-info {
             display: flex;
-            align-items: center;
-            gap: 15px;
-        }
-        .item-image {
-            width: 50px;
-            height: 50px;
-            border-radius: 8px;
-            object-fit: cover;
-            border: 2px solid rgba(255, 255, 255, 0.2);
+            flex-direction: column;
+            gap: 4px;
+            flex: 1;
         }
         .item-details {
             display: flex;
             flex-direction: column;
-            gap: 5px;
+            gap: 4px;
         }
         .item-details h3 {
             margin: 0;
-            font-size: 1.2em;
+            font-size: 1em;
             color: #ffffff;
-        }
-        .item-details p {
-            margin: 0;
-            font-size: 0.9em;
-            color: rgba(255, 255, 255, 0.7);
+            text-align: left;
+            border: none;
+            padding: 0;
+            text-transform: none;
         }
         .item-category {
-            font-size: 0.8em;
-            padding: 2px 8px;
+            font-size: 0.75em;
+            padding: 2px 6px;
             border-radius: 4px;
             text-transform: uppercase;
             letter-spacing: 0.5px;
+            display: inline-block;
         }
         .category-SpiritItems {
             color: #203500;
@@ -194,214 +297,295 @@
             background-color: #DD9642;
             border: 1px solid rgba(221, 150, 66, 0.3);
         }
-        .item-right {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-        .level-badge {
-            padding: 5px 15px;
-            border-radius: 4px;
-            color: white;
-            font-weight: bold;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
-        }
-        .level-6 { background-color: #ff0055; box-shadow: 0 0 10px rgba(255, 0, 85, 0.5); }
-        .level-5 { background-color: #ff3300; box-shadow: 0 0 10px rgba(255, 51, 0, 0.5); }
-        .level-4 { background-color: #ff6600; box-shadow: 0 0 10px rgba(255, 102, 0, 0.5); }
-        .level-3 { background-color: #00cc66; box-shadow: 0 0 10px rgba(0, 204, 102, 0.5); }
-        .level-2 { background-color: #0099ff; box-shadow: 0 0 10px rgba(0, 153, 255, 0.5); }
-        .level-1 { background-color: #6600ff; box-shadow: 0 0 10px rgba(102, 0, 255, 0.5); }
-        .get-recommendations {
-            display: block;
-            width: 100%;
-            padding: 15px;
-            margin: 20px 0;
-            background-color: rgba(0, 255, 136, 0.2);
-            color: #00ff88;
-            border: 2px solid #00ff88;
-            border-radius: 4px;
-            cursor: pointer;
-            font-size: 16px;
-            font-weight: bold;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            transition: all 0.3s ease;
-        }
-        .get-recommendations:hover {
-            background-color: rgba(0, 255, 136, 0.3);
-            box-shadow: 0 0 20px rgba(0, 255, 136, 0.3);
-            transform: translateY(-2px);
-        }
-        .recommendations h2 {
-            color: #ffffff;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
-        }
     </style>
 </head>
 <body>
     <div class="container">
         <h1>CounterLock</h1>
-        <div class="team-selection">
-            <div class="team-panel">
-                <h2>Your Team</h2>
-                <div class="hero-list" id="your-team">
-                    <!-- Heroes will be added here dynamically -->
+        <div class="main-layout">
+            <!-- Friendly Team Column -->
+            <div class="team-column friendly">
+                <div class="team-panel">
+                    <h2>Friendly Team</h2>
+                    <div id="friendly-heroes" class="hero-list"></div>
+                </div>
+                <div class="friendly-analysis">
+                    <h2>Friendly Team Analysis</h2>
+                    <div id="friendly-recommendations"></div>
                 </div>
             </div>
-            <div class="team-panel">
-                <h2>Enemy Team</h2>
-                <div class="hero-list" id="enemy-team">
-                    <!-- Heroes will be added here dynamically -->
+            
+            <!-- Enemy Team Column -->
+            <div class="team-column enemy">
+                <div class="team-panel">
+                    <h2>Enemy Team</h2>
+                    <div id="enemy-heroes" class="hero-list"></div>
+                </div>
+                <div class="enemy-analysis">
+                    <h2>Enemy Team Analysis</h2>
+                    <div id="enemy-recommendations"></div>
                 </div>
             </div>
-        </div>
-        <button class="get-recommendations" onclick="getRecommendations()">Get Counter Items</button>
-        <div class="recommendations" id="recommendations">
-            <!-- Recommendations will be added here dynamically -->
         </div>
     </div>
 
     <script>
+        let selectedEnemyTeam = [];
+        let selectedFriendlyTeam = [];
         let heroes = [];
-        let selectedYourTeam = new Set();
-        let selectedEnemyTeam = new Set();
-
-        // Fetch heroes when page loads
-        fetch('/api/heroes')
-            .then(response => response.json())
-            .then(data => {
-                heroes = data;
-                displayHeroes();
-            });
+        let counters = [];
 
         function displayHeroes() {
-            const yourTeamDiv = document.getElementById('your-team');
-            const enemyTeamDiv = document.getElementById('enemy-team');
-            
-            heroes.forEach(hero => {
-                // Your team heroes
-                const yourButton = document.createElement('button');
-                yourButton.className = 'hero-button';
-                const yourImage = document.createElement('img');
-                yourImage.src = hero.image_url;
-                yourButton.appendChild(yourImage);
-                const yourName = document.createElement('div');
-                yourName.className = 'hero-name';
-                yourName.textContent = hero.name;
-                yourButton.appendChild(yourName);
-                yourButton.onclick = () => toggleHero(hero.id, 'your');
-                yourTeamDiv.appendChild(yourButton);
+            fetch('/api/heroes')
+                .then(response => response.json())
+                .then(data => {
+                    heroes = data;
+                    const enemyContainer = document.getElementById('enemy-heroes');
+                    const friendlyContainer = document.getElementById('friendly-heroes');
+                    
+                    heroes.forEach(hero => {
+                        // Create enemy hero button
+                        const enemyButton = createHeroButton(hero, 'enemy');
+                        enemyContainer.appendChild(enemyButton);
+                        
+                        // Create friendly hero button
+                        const friendlyButton = createHeroButton(hero, 'friendly');
+                        friendlyContainer.appendChild(friendlyButton);
+                    });
+                });
+        }
 
-                // Enemy team heroes
-                const enemyButton = document.createElement('button');
-                enemyButton.className = 'hero-button';
-                const enemyImage = document.createElement('img');
-                enemyImage.src = hero.image_url;
-                enemyButton.appendChild(enemyImage);
-                const enemyName = document.createElement('div');
-                enemyName.className = 'hero-name';
-                enemyName.textContent = hero.name;
-                enemyButton.appendChild(enemyName);
-                enemyButton.onclick = () => toggleHero(hero.id, 'enemy');
-                enemyTeamDiv.appendChild(enemyButton);
-            });
+        function createHeroButton(hero, team) {
+            const button = document.createElement('button');
+            button.className = 'hero-button';
+            button.onclick = () => toggleHero(hero.id, team);
+            
+            const img = document.createElement('img');
+            img.src = hero.image_url;
+            img.alt = hero.name;
+            button.appendChild(img);
+            
+            const nameSpan = document.createElement('span');
+            nameSpan.className = 'hero-name';
+            nameSpan.textContent = hero.name;
+            button.appendChild(nameSpan);
+            
+            return button;
         }
 
         function toggleHero(heroId, team) {
-            const selectedSet = team === 'your' ? selectedYourTeam : selectedEnemyTeam;
-            const buttons = document.querySelectorAll(`#${team}-team .hero-button`);
-            const button = Array.from(buttons).find(b => 
-                b.querySelector('.hero-name').textContent === heroes.find(h => h.id === heroId).name
-            );
+            const selectedTeam = team === 'enemy' ? selectedEnemyTeam : selectedFriendlyTeam;
+            const index = selectedTeam.indexOf(heroId);
+            const maxTeamSize = 6;
 
-            if (selectedSet.has(heroId)) {
-                selectedSet.delete(heroId);
-                button.classList.remove('selected');
-            } else if (selectedSet.size < 6) {
-                selectedSet.add(heroId);
-                button.classList.add('selected');
+            if (index === -1 && selectedTeam.length < maxTeamSize) {
+                selectedTeam.push(heroId);
+            } else if (index !== -1) {
+                selectedTeam.splice(index, 1);
             }
+
+            // Update button states
+            const buttons = document.querySelectorAll(`#${team}-heroes .hero-button`);
+            buttons.forEach((button, i) => {
+                const heroId = heroes[i].id;
+                button.classList.toggle('selected', selectedTeam.includes(heroId));
+            });
+
+            // Get recommendations whenever team changes
+            getTeamAnalysis();
         }
 
-        function getRecommendations() {
-            if (selectedEnemyTeam.size === 0) {
-                alert('Please select at least one enemy hero');
+        function getTeamAnalysis() {
+            if (selectedEnemyTeam.length === 0 && selectedFriendlyTeam.length === 0) {
+                document.getElementById('enemy-recommendations').innerHTML = '';
+                document.getElementById('friendly-recommendations').innerHTML = '';
                 return;
             }
 
-            fetch('/api/recommend', {
+            fetch('/api/team_analysis', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify({
-                    enemy_team: Array.from(selectedEnemyTeam)
+                    enemy_team: selectedEnemyTeam,
+                    friendly_team: selectedFriendlyTeam
                 })
             })
             .then(response => response.json())
             .then(data => {
-                displayItems(data);
+                displayEnemyAnalysis(data.enemy_analysis);
+                displayFriendlyRecommendations(data.friendly_recommendations);
             });
         }
 
-        function displayItems(items) {
-            const recsDiv = document.getElementById('recommendations');
-            recsDiv.innerHTML = '';
+        function displayEnemyAnalysis(analysis) {
+            const container = document.getElementById('enemy-recommendations');
+            container.innerHTML = '';
+
+            for (const [heroId, data] of Object.entries(analysis)) {
+                const heroSection = document.createElement('div');
+                heroSection.className = 'hero-analysis';
+                
+                const headerSection = document.createElement('div');
+                headerSection.className = 'hero-analysis-header';
+                
+                // Add hero portrait
+                const heroPortrait = document.createElement('img');
+                heroPortrait.className = 'hero-portrait';
+                const hero = heroes.find(h => h.name === data.hero_name);
+                heroPortrait.src = hero ? hero.image_url : '';
+                heroPortrait.alt = data.hero_name;
+                headerSection.appendChild(heroPortrait);
+                
+                const heroTitle = document.createElement('h3');
+                heroTitle.textContent = data.hero_name;
+                headerSection.appendChild(heroTitle);
+                
+                heroSection.appendChild(headerSection);
+
+                const itemsList = document.createElement('div');
+                itemsList.className = 'counter-items';
+                
+                data.counter_items.forEach(item => {
+                    const itemCard = createItemCard(item, data.hero_name);
+                    itemsList.appendChild(itemCard);
+                });
+
+                heroSection.appendChild(itemsList);
+                container.appendChild(heroSection);
+            }
+        }
+
+        function displayFriendlyRecommendations(recommendations) {
+            const container = document.getElementById('friendly-recommendations');
+            container.innerHTML = '';
+
+            for (const [heroId, data] of Object.entries(recommendations)) {
+                const heroSection = document.createElement('div');
+                heroSection.className = 'hero-analysis';
+                
+                const headerSection = document.createElement('div');
+                headerSection.className = 'hero-analysis-header';
+                
+                // Add hero portrait
+                const heroPortrait = document.createElement('img');
+                heroPortrait.className = 'hero-portrait';
+                const hero = heroes.find(h => h.name === data.hero_name);
+                heroPortrait.src = hero ? hero.image_url : '';
+                heroPortrait.alt = data.hero_name;
+                headerSection.appendChild(heroPortrait);
+                
+                const heroTitle = document.createElement('h3');
+                heroTitle.textContent = data.hero_name;
+                headerSection.appendChild(heroTitle);
+                
+                heroSection.appendChild(headerSection);
+
+                const itemsList = document.createElement('div');
+                itemsList.className = 'counter-items';
+                
+                data.recommended_items.forEach(item => {
+                    const itemCard = createItemCard(item, data.hero_name);
+                    itemsList.appendChild(itemCard);
+                });
+
+                heroSection.appendChild(itemsList);
+                container.appendChild(heroSection);
+            }
+        }
+
+        function createItemCard(item, heroName) {
+            const card = document.createElement('div');
+            card.className = 'item-card';
             
-            if (items.length === 0) {
-                recsDiv.innerHTML = '<p>Select enemy heroes to get item recommendations.</p>';
-                return;
+            // Add item image
+            const itemImage = document.createElement('img');
+            itemImage.className = 'item-image';
+            itemImage.src = `/static/images/items/${item.category}/${item.name}.png`;
+            itemImage.alt = item.name;
+            itemImage.onerror = function() {
+                this.src = '/static/images/items/placeholder.png';
+            };
+            card.appendChild(itemImage);
+            
+            const itemInfo = document.createElement('div');
+            itemInfo.className = 'item-info';
+            
+            const details = document.createElement('div');
+            details.className = 'item-details';
+            
+            const name = document.createElement('h3');
+            name.textContent = item.name;
+            details.appendChild(name);
+            
+            const category = document.createElement('span');
+            category.className = `item-category category-${item.category}`;
+            category.textContent = item.category.replace('Items', '');
+            details.appendChild(category);
+            
+            itemInfo.appendChild(details);
+            card.appendChild(itemInfo);
+
+            // Add tooltip
+            const tooltip = document.createElement('div');
+            tooltip.className = 'item-tooltip';
+            
+            const tooltipTitle = document.createElement('div');
+            tooltipTitle.className = 'tooltip-title';
+            tooltipTitle.textContent = 'Counters These Selected Heroes:';
+            tooltip.appendChild(tooltipTitle);
+
+            // Get selected heroes that this item counters
+            const counteredHeroes = heroes.filter(h => {
+                // Only include heroes that are in the selected enemy team
+                if (!selectedEnemyTeam.includes(h.id)) return false;
+                
+                const counterData = counters.find(c => 
+                    c.hero_name === h.name && c.counter_items.some(ci => ci.name === item.name)
+                );
+                return counterData !== undefined;
+            });
+
+            if (counteredHeroes.length === 0) {
+                const noHeroes = document.createElement('div');
+                noHeroes.className = 'countered-hero';
+                noHeroes.style.fontStyle = 'italic';
+                noHeroes.style.color = 'rgba(255, 255, 255, 0.5)';
+                noHeroes.textContent = 'No selected heroes are countered';
+                tooltip.appendChild(noHeroes);
+            } else {
+                counteredHeroes.forEach(hero => {
+                    const heroDiv = document.createElement('div');
+                    heroDiv.className = 'countered-hero';
+                    
+                    const heroImg = document.createElement('img');
+                    heroImg.src = hero.image_url;
+                    heroImg.alt = hero.name;
+                    heroImg.onerror = function() {
+                        this.src = '/static/images/heroes/placeholder.png';
+                    };
+                    heroDiv.appendChild(heroImg);
+                    
+                    const heroName = document.createElement('span');
+                    heroName.textContent = hero.name;
+                    heroDiv.appendChild(heroName);
+                    
+                    tooltip.appendChild(heroDiv);
+                });
             }
 
-            items.forEach(item => {
-                const itemDiv = document.createElement('div');
-                itemDiv.className = 'item-card';
-                
-                // Left side with image and name
-                const itemInfo = document.createElement('div');
-                itemInfo.className = 'item-info';
-                
-                const itemImage = document.createElement('img');
-                itemImage.className = 'item-image';
-                itemImage.src = `/static/images/items/${item.category}/${item.name}.png`;
-                itemImage.alt = item.name;
-                itemInfo.appendChild(itemImage);
-                
-                const itemDetails = document.createElement('div');
-                itemDetails.className = 'item-details';
-                
-                const itemName = document.createElement('h3');
-                itemName.textContent = item.name;
-                itemDetails.appendChild(itemName);
-                
-                itemInfo.appendChild(itemDetails);
-                itemDiv.appendChild(itemInfo);
-                
-                // Right side with level and category
-                const itemRight = document.createElement('div');
-                itemRight.className = 'item-right';
-                
-                const levelBadge = document.createElement('span');
-                levelBadge.className = 'level-badge';
-                levelBadge.textContent = `Level ${item.level}`;
-                itemRight.appendChild(levelBadge);
-                
-                const itemCategory = document.createElement('span');
-                itemCategory.className = `item-category category-${item.category}`;
-                // Format the category name to add space
-                const displayCategory = item.category.replace(/([A-Z][a-z]+)([A-Z][a-z]+)/, '$1 $2');
-                itemCategory.textContent = displayCategory;
-                itemRight.appendChild(itemCategory);
-                
-                itemDiv.appendChild(itemRight);
-                recsDiv.appendChild(itemDiv);
-            });
+            card.appendChild(tooltip);
+            
+            return card;
         }
+
+        fetch('/api/counters')
+            .then(response => response.json())
+            .then(data => {
+                counters = data;
+                displayHeroes();
+            });
     </script>
 </body>
 </html>
