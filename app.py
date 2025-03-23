@@ -2,6 +2,7 @@ from flask import Flask, render_template, jsonify, request, url_for
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
 import os
+import json
 from sheets_integration import get_hero_items, get_hero_counters
 
 app = Flask(__name__)
@@ -9,6 +10,14 @@ app = Flask(__name__)
 # Use SQLite for local development, but store in /tmp for Render deployment
 if os.environ.get('RENDER'):
     app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:////tmp/counterlock.db'
+    # Set up Google Sheets credentials from environment variable
+    if os.environ.get('GOOGLE_SHEETS_CREDENTIALS'):
+        creds_dir = 'credentials'
+        if not os.path.exists(creds_dir):
+            os.makedirs(creds_dir)
+        creds_path = os.path.join(creds_dir, 'google_sheets.json')
+        with open(creds_path, 'w') as f:
+            f.write(os.environ.get('GOOGLE_SHEETS_CREDENTIALS'))
 else:
     app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///counterlock.db'
 
