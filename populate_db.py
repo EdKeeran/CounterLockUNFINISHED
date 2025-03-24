@@ -1,5 +1,4 @@
 from app import app, db, Hero, Item
-from sheets_integration import populate_counters
 
 # First, clear existing data
 with app.app_context():
@@ -73,8 +72,4 @@ with app.app_context():
             item_objects[item_name] = item
 
     db.session.commit()
-
-    # Populate Google Sheets with counter data
-    populate_counters()
-
     print("Database populated successfully!")

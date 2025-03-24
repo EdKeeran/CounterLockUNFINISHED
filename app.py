@@ -38,17 +38,6 @@ class Item(db.Model):
     category = db.Column(db.String(50), nullable=False)
     image_path = db.Column(db.String(200), nullable=False, default='placeholder.png')
 
-class Counter(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    hero_id = db.Column(db.Integer, db.ForeignKey('hero.id'), nullable=False)
-    item_id = db.Column(db.Integer, db.ForeignKey('item.id'), nullable=False)
-    effectiveness = db.Column(db.Float, nullable=False)
-
-class HeroItems(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    hero_id = db.Column(db.Integer, db.ForeignKey('hero.id'), nullable=False)
-    item_id = db.Column(db.Integer, db.ForeignKey('item.id'), nullable=False)
-
 # Initialize database and populate with data
 def init_db():
     with app.app_context():
@@ -83,69 +72,6 @@ def get_heroes():
         'name': h.name,
         'image_url': url_for('static', filename=h.image_path)
     } for h in heroes])
-
-@app.route('/api/counters')
-def get_counters():
-    # Get all counter relationships with their associated heroes and items
-    counters = Counter.query.all()
-    counter_data = []
-    
-    # Group counters by hero
-    hero_counters = {}
-    for counter in counters:
-        hero = Hero.query.get(counter.hero_id)
-        item = Item.query.get(counter.item_id)
-        
-        if hero.name not in hero_counters:
-            hero_counters[hero.name] = {
-                'hero_name': hero.name,
-                'counter_items': []
-            }
-        
-        hero_counters[hero.name]['counter_items'].append({
-            'name': item.name,
-            'category': item.category,
-            'effectiveness': counter.effectiveness
-        })
-    
-    return jsonify(list(hero_counters.values()))
-
-@app.route('/api/recommend', methods=['POST'])
-def recommend_items():
-    enemy_team = request.json.get('enemy_team', [])
-    
-    # Get all items that counter the enemy heroes
-    counters = Counter.query.filter(Counter.hero_id.in_(enemy_team)).all()
-    
-    # Calculate effectiveness levels
-    item_scores = {}
-    for counter in counters:
-        if counter.item_id not in item_scores:
-            item_scores[counter.item_id] = {
-                'heroes_countered': 0,
-                'total_effectiveness': 0
-            }
-        item_scores[counter.item_id]['heroes_countered'] += 1
-        item_scores[counter.item_id]['total_effectiveness'] += counter.effectiveness
-
-    # Calculate final rankings (Level 1-6)
-    rankings = []
-    for item_id, scores in item_scores.items():
-        item = Item.query.get(item_id)
-        level = min(6, max(1, scores['heroes_countered']))
-        rankings.append({
-            'id': item.id,
-            'name': item.name,
-            'category': item.category,
-            'level': level,
-            'heroes_countered': scores['heroes_countered'],
-            'effectiveness': scores['total_effectiveness'] / scores['heroes_countered']
-        })
-    
-    # Sort by effectiveness and heroes countered
-    rankings.sort(key=lambda x: (-x['heroes_countered'], -x['effectiveness']))
-    
-    return jsonify(rankings)
 
 @app.route('/api/team_analysis', methods=['POST'])
 def analyze_teams():
@@ -182,15 +108,13 @@ def analyze_teams():
                         other_counters = get_hero_counters(other_hero.name)
                         if item_name in other_counters:
                             other_countered_heroes.append({
-                                'name': other_hero.name,
-                                'effectiveness': 1.0
+                                'name': other_hero.name
                             })
                 
                 counter_items.append({
                     'id': item.id,
                     'name': item.name,
                     'category': item.category,
-                    'effectiveness': 1.0,  # Default effectiveness
                     'also_counters': other_countered_heroes
                 })
         
@@ -220,8 +144,7 @@ def analyze_teams():
                     enemy = heroes[enemy_id]
                     if item_name in get_hero_counters(enemy.name):
                         countered_enemies.append({
-                            'name': enemy.name,
-                            'effectiveness': 1.0  # Default effectiveness
+                            'name': enemy.name
                         })
                 
                 if countered_enemies:  # Only include items that counter enemies

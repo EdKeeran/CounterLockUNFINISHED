@@ -4,6 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CounterLock - Deadlock Counter Items</title>
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
     <style>
         @font-face {
             font-family: 'Forevs';
@@ -100,41 +103,46 @@
         }
         .hero-list {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(70px, 1fr));
+            grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
             gap: 10px;
             margin-top: 15px;
         }
         @media (min-width: 768px) {
             .hero-list {
-                grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+                grid-template-columns: repeat(auto-fill, minmax(90px, 1fr));
                 gap: 15px;
             }
         }
         .hero-button {
-            width: 100%;
-            aspect-ratio: 1;
-            padding: 0;
+            position: relative;
+            background: none;
             border: 3px solid rgba(255, 255, 255, 0.2);
             border-radius: 10px;
+            padding: 0;
             cursor: pointer;
             transition: all 0.3s ease;
+            width: 100%;
+            aspect-ratio: 1;
             overflow: hidden;
-            position: relative;
-            background: transparent;
+        }
+        .hero-button:hover {
+            border-color: rgba(255, 255, 255, 0.5);
+            transform: scale(1.05);
+        }
+        .hero-button.selected {
+            border-color: #4CAF50;
+            box-shadow: 0 0 10px rgba(76, 175, 80, 0.5);
+        }
+        .hero-button.blurred {
+            opacity: 0.5;
+            filter: blur(2px);
+            pointer-events: none;
         }
         .hero-button img {
             width: 100%;
             height: 100%;
             object-fit: cover;
-            transition: transform 0.3s ease;
-        }
-        .hero-button:hover {
-            transform: scale(1.1);
-            border-color: rgba(255, 255, 255, 0.5);
-        }
-        .hero-button.selected {
-            border-color: #00ff88;
-            box-shadow: 0 0 20px rgba(0, 255, 136, 0.5);
+            border-radius: 7px;
         }
         .hero-name {
             position: absolute;
@@ -263,17 +271,18 @@
             text-overflow: ellipsis;
         }
         .item-category {
-            font-size: clamp(10px, 2vw, 12px);
-            padding: 2px 6px;
-            border-radius: 4px;
             display: inline-block;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: bold;
+            margin-bottom: 8px;
             text-transform: uppercase;
         }
-        .category-VitalityItems { background-color: #2ecc71; color: #000; }
-        .category-SpiritItems { background-color: #3498db; color: #fff; }
-        .category-CombatItems { background-color: #e74c3c; color: #fff; }
-        .category-MagicItems { background-color: #9b59b6; color: #fff; }
-        
+        .category-VitalityItems { background-color: #7CBB1E; color: #203500; }
+        .category-WeaponItems { background-color: #DD9642; color: #312406; }
+        .category-SpiritItems { background-color: #CE91FF; color: #372248; }
+           
         .item-tooltip {
             display: none;
             position: absolute;
@@ -374,9 +383,9 @@
     </div>
 
     <script>
-        let selectedEnemyTeam = [];
-        let selectedFriendlyTeam = [];
         let heroes = [];
+        const selectedEnemyTeam = [];
+        const selectedFriendlyTeam = [];
 
         function displayHeroes() {
             fetch('/api/heroes')
@@ -402,6 +411,7 @@
         function createHeroButton(hero, team) {
             const button = document.createElement('button');
             button.className = 'hero-button';
+            button.setAttribute('data-hero-id', hero.id);
             button.onclick = () => toggleHero(hero.id, team);
             
             const img = document.createElement('img');
@@ -419,6 +429,7 @@
 
         function toggleHero(heroId, team) {
             const selectedTeam = team === 'enemy' ? selectedEnemyTeam : selectedFriendlyTeam;
+            const oppositeTeam = team === 'enemy' ? selectedFriendlyTeam : selectedEnemyTeam;
             const index = selectedTeam.indexOf(heroId);
             const maxTeamSize = 6;
 
@@ -428,11 +439,19 @@
                 selectedTeam.splice(index, 1);
             }
 
-            // Update button states
+            // Update button states for the current team
             const buttons = document.querySelectorAll(`#${team}-heroes .hero-button`);
-            buttons.forEach((button, i) => {
-                const heroId = heroes[i].id;
-                button.classList.toggle('selected', selectedTeam.includes(heroId));
+            buttons.forEach((button) => {
+                const btnHeroId = parseInt(button.getAttribute('data-hero-id'));
+                button.classList.toggle('selected', selectedTeam.includes(btnHeroId));
+            });
+
+            // Update blur states for the opposite team's buttons
+            const oppositeTeamName = team === 'enemy' ? 'friendly' : 'enemy';
+            const oppositeButtons = document.querySelectorAll(`#${oppositeTeamName}-heroes .hero-button`);
+            oppositeButtons.forEach((button) => {
+                const btnHeroId = parseInt(button.getAttribute('data-hero-id'));
+                button.classList.toggle('blurred', selectedTeam.includes(btnHeroId));
             });
 
             // Get recommendations whenever team changes
