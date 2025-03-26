@@ -66,11 +66,11 @@ with app.app_context():
     # Add items to database with image paths
     for category, items in item_categories.items():
         for item_name in items:
-            # Use the exact item name and category for the image path, but remove spaces for the image filename
+            # Use the exact item name and category for the image path
             item = Item(
                 name=item_name,
                 category=category,
-                image_path=f"images/items/{category}/{item_name.replace(' ', '')}.png"
+                image_path=f"images/items/{category}/{item_name}.png"
             )
             db.session.add(item)
 

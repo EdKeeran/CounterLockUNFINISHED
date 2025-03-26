@@ -79,13 +79,16 @@
             background: rgba(0, 0, 0, 0.6);
             border: 2px solid rgba(255, 255, 255, 0.2);
             border-radius: 8px;
-            padding: 10px;
+            padding: 0;
             cursor: pointer;
             transition: all 0.3s ease;
             position: relative;
             font-family: 'Forevs', sans-serif;
             font-weight: bold;
             text-transform: uppercase;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
         }
         .hero-button:hover {
             border-color: rgba(255, 255, 255, 0.5);
@@ -98,9 +101,11 @@
         }
         .hero-button img {
             width: 100%;
-            height: 100%;
-            object-fit: cover;
-            border-radius: 7px;
+            height: auto;
+            object-fit: contain;
+            display: block;
+            margin: 0;
+            padding: 0;
         }
         .hero-name {
             font-family: 'Forevs', sans-serif;
