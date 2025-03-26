@@ -66,52 +66,10 @@
             flex-direction: column;
             gap: 20px;
         }
-        @media (min-width: 768px) {
-            .main-layout {
-                flex-direction: row;
-            }
-            .team-column {
-                flex: 1;
-            }
-            .team-column.friendly {
-                border-right: 2px solid rgba(255, 255, 255, 0.1);
-                padding-right: 20px;
-            }
-            .team-column.enemy {
-                padding-left: 20px;
-            }
-        }
-        .team-column {
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
-        }
-        .team-panel {
-            padding: 15px;
-            background-color: rgba(0, 0, 0, 0.6);
-            border-radius: 8px;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-        }
-        .team-panel h2 {
-            color: #ffffff;
-            margin-top: 0;
-            font-weight: bold;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
-            font-size: clamp(18px, 4vw, 24px);
-        }
-        .hero-list {
+        .hero-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
             gap: 10px;
-            margin-top: 15px;
-        }
-        @media (min-width: 768px) {
-            .hero-list {
-                grid-template-columns: repeat(auto-fill, minmax(90px, 1fr));
-                gap: 15px;
-            }
         }
         .hero-button {
             position: relative;
@@ -132,11 +90,6 @@
         .hero-button.selected {
             border-color: #4CAF50;
             box-shadow: 0 0 10px rgba(76, 175, 80, 0.5);
-        }
-        .hero-button.blurred {
-            opacity: 0.5;
-            filter: blur(2px);
-            pointer-events: none;
         }
         .hero-button img {
             width: 100%;
@@ -163,66 +116,11 @@
             letter-spacing: 1px;
             text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
         }
-        .analysis-section {
+        .recommendations {
             margin-top: 20px;
         }
-        .enemy-analysis, .friendly-analysis {
+        .hero-section {
             margin-bottom: 20px;
-        }
-        .enemy-analysis h2, .friendly-analysis h2 {
-            color: #ffffff;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
-            font-size: clamp(18px, 4vw, 24px);
-        }
-        .hero-analysis {
-            margin-bottom: 15px;
-            background-color: rgba(0, 0, 0, 0.4);
-            padding: 15px;
-            border-radius: 8px;
-        }
-        .hero-analysis-header {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            margin-bottom: 15px;
-            padding-bottom: 15px;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
-        }
-        .hero-portrait {
-            width: 70px;
-            height: 70px;
-            border-radius: 10px;
-            margin-bottom: 10px;
-            border: 2px solid rgba(255, 255, 255, 0.3);
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
-            object-fit: cover;
-            background-color: rgba(0, 0, 0, 0.3);
-        }
-        @media (min-width: 768px) {
-            .hero-portrait {
-                width: 80px;
-                height: 80px;
-            }
-        }
-        .hero-analysis h3 {
-            margin: 0;
-            font-size: clamp(16px, 3vw, 20px);
-            color: #ffffff;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            text-align: center;
-        }
-        .counter-items {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-            gap: 10px;
-        }
-        @media (min-width: 768px) {
-            .counter-items {
-                grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-            }
         }
         .item-card {
             padding: 8px;
@@ -235,55 +133,23 @@
             gap: 8px;
             position: relative;
         }
-        @media (min-width: 768px) {
-            .item-card {
-                padding: 12px;
-                gap: 12px;
-            }
-        }
-        .item-image {
-            width: 40px;
-            height: 40px;
-            border-radius: 5px;
-            object-fit: cover;
-        }
-        @media (min-width: 768px) {
-            .item-image {
-                width: 50px;
-                height: 50px;
-            }
-        }
-        .item-info {
-            flex: 1;
-            min-width: 0;
-        }
-        .item-details {
+        .item-header {
             display: flex;
-            flex-direction: column;
-            gap: 4px;
+            align-items: center;
+            gap: 8px;
         }
-        .item-details h3 {
-            margin: 0;
+        .item-name {
             font-size: clamp(12px, 2.5vw, 16px);
             color: #ffffff;
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
         }
-        .item-category {
-            display: inline-block;
-            padding: 4px 8px;
-            border-radius: 4px;
+        .counter-count {
             font-size: 12px;
-            font-weight: bold;
-            margin-bottom: 8px;
-            text-transform: uppercase;
+            color: #ffffff;
         }
-        .category-VitalityItems { background-color: #7CBB1E; color: #203500; }
-        .category-WeaponItems { background-color: #DD9642; color: #312406; }
-        .category-SpiritItems { background-color: #CE91FF; color: #372248; }
-           
-        .item-tooltip {
+        .tooltip {
             display: none;
             position: absolute;
             bottom: 100%;
@@ -298,7 +164,7 @@
             max-width: 300px;
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
         }
-        .item-card:hover .item-tooltip {
+        .item-card:hover .tooltip {
             display: block;
         }
         .tooltip-title {
@@ -310,45 +176,18 @@
             text-transform: uppercase;
             letter-spacing: 1px;
         }
-        .tooltip-hero {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            padding: 4px;
-            border-radius: 4px;
-            background-color: rgba(255, 255, 255, 0.1);
-            margin-bottom: 4px;
+        .tooltip ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
         }
-        .tooltip-hero:last-child {
-            margin-bottom: 0;
-        }
-        .tooltip-hero img {
-            width: 24px;
-            height: 24px;
-            border-radius: 4px;
-            object-fit: cover;
-        }
-        .tooltip-hero span {
+        .tooltip li {
             font-size: 12px;
             color: #ffffff;
+            margin-bottom: 4px;
         }
-        
-        @media (max-width: 767px) {
-            body {
-                padding: 5px;
-            }
-            .container {
-                padding: 10px;
-            }
-            .item-tooltip {
-                position: fixed;
-                bottom: auto;
-                top: 50%;
-                left: 50%;
-                transform: translate(-50%, -50%);
-                width: 90%;
-                max-width: 300px;
-            }
+        .tooltip li:last-child {
+            margin-bottom: 0;
         }
     </style>
 </head>
@@ -356,102 +195,68 @@
     <div class="container">
         <h1>CounterLock</h1>
         <div class="main-layout">
-            <!-- Friendly Team Column -->
-            <div class="team-column friendly">
-                <div class="team-panel">
-                    <h2>Friendly Team</h2>
-                    <div id="friendly-heroes" class="hero-list"></div>
-                </div>
-                <div class="friendly-analysis">
-                    <h2>Friendly Team Analysis</h2>
-                    <div id="friendly-recommendations"></div>
+            <!-- Hero Selection -->
+            <div class="hero-selection">
+                <div id="enemy-heroes" class="hero-grid">
+                    <!-- Heroes will be dynamically added here -->
                 </div>
             </div>
             
-            <!-- Enemy Team Column -->
-            <div class="team-column enemy">
-                <div class="team-panel">
-                    <h2>Enemy Team</h2>
-                    <div id="enemy-heroes" class="hero-list"></div>
-                </div>
-                <div class="enemy-analysis">
-                    <h2>Enemy Team Analysis</h2>
-                    <div id="enemy-recommendations"></div>
-                </div>
+            <!-- Counter Recommendations -->
+            <div id="enemy-recommendations" class="recommendations">
+                <!-- Counter recommendations will be dynamically added here -->
             </div>
         </div>
-    </div>
 
-    <script>
-        let heroes = [];
-        const selectedEnemyTeam = [];
-        const selectedFriendlyTeam = [];
-
+        <script>
+        let selectedEnemyTeam = [];
+        
         function displayHeroes() {
             fetch('/api/heroes')
                 .then(response => response.json())
-                .then(data => {
-                    heroes = data;
-                    const enemyContainer = document.getElementById('enemy-heroes');
-                    const friendlyContainer = document.getElementById('friendly-heroes');
-                    
+                .then(heroes => {
+                    const enemyGrid = document.getElementById('enemy-heroes');
+                    enemyGrid.innerHTML = '';
                     heroes.forEach(hero => {
-                        // Create enemy hero button
-                        const enemyButton = createHeroButton(hero, 'enemy');
-                        enemyContainer.appendChild(enemyButton);
-                        
-                        // Create friendly hero button
-                        const friendlyButton = createHeroButton(hero, 'friendly');
-                        friendlyContainer.appendChild(friendlyButton);
+                        enemyGrid.appendChild(createHeroButton(hero, 'enemy'));
                     });
-                })
-                .catch(error => console.error('Error fetching heroes:', error));
+                });
         }
 
         function createHeroButton(hero, team) {
             const button = document.createElement('button');
             button.className = 'hero-button';
             button.setAttribute('data-hero-id', hero.id);
-            button.onclick = () => toggleHero(hero.id, team);
-            
+            button.onclick = () => toggleHero(hero.id);
+
             const img = document.createElement('img');
             img.src = hero.image_url;
             img.alt = hero.name;
             button.appendChild(img);
-            
-            const nameSpan = document.createElement('span');
-            nameSpan.className = 'hero-name';
-            nameSpan.textContent = hero.name;
-            button.appendChild(nameSpan);
-            
+
+            const name = document.createElement('div');
+            name.className = 'hero-name';
+            name.textContent = hero.name;
+            button.appendChild(name);
+
             return button;
         }
 
-        function toggleHero(heroId, team) {
-            const selectedTeam = team === 'enemy' ? selectedEnemyTeam : selectedFriendlyTeam;
-            const oppositeTeam = team === 'enemy' ? selectedFriendlyTeam : selectedEnemyTeam;
-            const index = selectedTeam.indexOf(heroId);
+        function toggleHero(heroId) {
+            const index = selectedEnemyTeam.indexOf(heroId);
             const maxTeamSize = 6;
 
-            if (index === -1 && selectedTeam.length < maxTeamSize) {
-                selectedTeam.push(heroId);
+            if (index === -1 && selectedEnemyTeam.length < maxTeamSize) {
+                selectedEnemyTeam.push(heroId);
             } else if (index !== -1) {
-                selectedTeam.splice(index, 1);
+                selectedEnemyTeam.splice(index, 1);
             }
 
-            // Update button states for the current team
-            const buttons = document.querySelectorAll(`#${team}-heroes .hero-button`);
+            // Update button states
+            const buttons = document.querySelectorAll('#enemy-heroes .hero-button');
             buttons.forEach((button) => {
                 const btnHeroId = parseInt(button.getAttribute('data-hero-id'));
-                button.classList.toggle('selected', selectedTeam.includes(btnHeroId));
-            });
-
-            // Update blur states for the opposite team's buttons
-            const oppositeTeamName = team === 'enemy' ? 'friendly' : 'enemy';
-            const oppositeButtons = document.querySelectorAll(`#${oppositeTeamName}-heroes .hero-button`);
-            oppositeButtons.forEach((button) => {
-                const btnHeroId = parseInt(button.getAttribute('data-hero-id'));
-                button.classList.toggle('blurred', selectedTeam.includes(btnHeroId));
+                button.classList.toggle('selected', selectedEnemyTeam.includes(btnHeroId));
             });
 
             // Get recommendations whenever team changes
@@ -459,9 +264,8 @@
         }
 
         function getTeamAnalysis() {
-            if (selectedEnemyTeam.length === 0 && selectedFriendlyTeam.length === 0) {
+            if (selectedEnemyTeam.length === 0) {
                 document.getElementById('enemy-recommendations').innerHTML = '';
-                document.getElementById('friendly-recommendations').innerHTML = '';
                 return;
             }
 
@@ -471,14 +275,12 @@
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify({
-                    enemy_team: selectedEnemyTeam,
-                    friendly_team: selectedFriendlyTeam
+                    enemy_team: selectedEnemyTeam
                 })
             })
             .then(response => response.json())
             .then(data => {
                 displayEnemyAnalysis(data.enemy_analysis);
-                displayFriendlyAnalysis(data.friendly_analysis);
             });
         }
 
@@ -486,204 +288,72 @@
             const container = document.getElementById('enemy-recommendations');
             container.innerHTML = '';
 
-            for (const [heroId, data] of Object.entries(analysis)) {
+            if (Object.keys(analysis).length === 0) {
+                return;
+            }
+
+            for (const heroId in analysis) {
+                const heroData = analysis[heroId];
                 const heroSection = document.createElement('div');
-                heroSection.className = 'hero-analysis';
-                
-                const headerSection = document.createElement('div');
-                headerSection.className = 'hero-analysis-header';
-                
-                // Add hero portrait
-                const heroPortrait = document.createElement('img');
-                heroPortrait.className = 'hero-portrait';
-                const hero = heroes.find(h => h.name === data.hero_name);
-                heroPortrait.src = hero ? hero.image_url : '';
-                heroPortrait.alt = data.hero_name;
-                headerSection.appendChild(heroPortrait);
-                
-                const heroTitle = document.createElement('h3');
-                heroTitle.textContent = data.hero_name;
-                headerSection.appendChild(heroTitle);
-                
-                heroSection.appendChild(headerSection);
+                heroSection.className = 'hero-section';
 
-                const itemsList = document.createElement('div');
-                itemsList.className = 'counter-items';
-                
-                data.counter_items.forEach(item => {
-                    const itemCard = createItemCard(item, data.hero_name);
-                    itemsList.appendChild(itemCard);
-                });
+                const counterItems = heroData.counter_items;
+                if (counterItems.length > 0) {
+                    counterItems.forEach(item => {
+                        heroSection.appendChild(createItemCard(item, heroData.hero_name));
+                    });
+                }
 
-                heroSection.appendChild(itemsList);
                 container.appendChild(heroSection);
             }
         }
 
-        function displayFriendlyAnalysis(analysis) {
-            const container = document.getElementById('friendly-recommendations');
-            container.innerHTML = '';
-
-            let friendlyHtml = '';
-            for (const [heroId, data] of Object.entries(analysis)) {
-                const hero = heroes.find(h => h.name === data.hero_name);
-                friendlyHtml += `
-                    <div class="hero-analysis">
-                        <div class="hero-analysis-header">
-                            <img class="hero-portrait" src="${hero ? hero.image_url : ''}" alt="${data.hero_name}">
-                            <h3>${data.hero_name}</h3>
-                        </div>
-                        <div class="counter-items">
-                            ${data.items.map(item => `
-                                <div class="item-card" data-item-name="${item.name}">
-                                    <img class="item-image" src="/static/images/items/${item.category}/${item.name}.png" alt="${item.name}">
-                                    <span class="item-name">${item.name}</span>
-                                    <div class="item-tooltip">
-                                        <strong>Counters:</strong>
-                                        <div class="tooltip-heroes">
-                                            ${item.counters.map(enemy => {
-                                                const enemyHero = heroes.find(h => h.name === enemy.name);
-                                                return `
-                                                    <div class="tooltip-hero">
-                                                        <img src="${enemyHero ? enemyHero.image_url : ''}" alt="${enemy.name}">
-                                                        <span>${enemy.name}</span>
-                                                    </div>
-                                                `;
-                                            }).join('')}
-                                        </div>
-                                    </div>
-                                </div>
-                            `).join('')}
-                        </div>
-                    </div>
-                `;
-            }
-            container.innerHTML = friendlyHtml;
-
-            // Add tooltip event listeners
-            document.querySelectorAll('.item-card').forEach(card => {
-                card.addEventListener('mouseenter', function() {
-                    const tooltip = this.querySelector('.item-tooltip');
-                    if (tooltip) {
-                        tooltip.style.display = 'block';
-                    }
-                });
-                
-                card.addEventListener('mouseleave', function() {
-                    const tooltip = this.querySelector('.item-tooltip');
-                    if (tooltip) {
-                        tooltip.style.display = 'none';
-                    }
-                });
-            });
-        }
-
         function createItemCard(item, heroName) {
             const card = document.createElement('div');
-            card.className = 'item-card';
-            
-            // Add item image
-            const itemImage = document.createElement('img');
-            itemImage.className = 'item-image';
-            itemImage.src = `/static/images/items/${item.category}/${item.name}.png`;
-            itemImage.alt = item.name;
-            itemImage.onerror = function() {
-                this.src = '/static/images/items/placeholder.png';
-            };
-            card.appendChild(itemImage);
-            
-            const itemInfo = document.createElement('div');
-            itemInfo.className = 'item-info';
-            
-            const details = document.createElement('div');
-            details.className = 'item-details';
-            
-            const name = document.createElement('h3');
-            name.textContent = item.name;
-            details.appendChild(name);
-            
-            const category = document.createElement('span');
-            category.className = `item-category category-${item.category}`;
-            category.textContent = item.category.replace('Items', '');
-            details.appendChild(category);
-            
-            itemInfo.appendChild(details);
-            card.appendChild(itemInfo);
+            card.className = `item-card ${item.category.toLowerCase()}`;
 
-            // Add tooltip
-            const tooltip = document.createElement('div');
-            tooltip.className = 'item-tooltip';
+            const header = document.createElement('div');
+            header.className = 'item-header';
             
-            const tooltipTitle = document.createElement('div');
-            tooltipTitle.className = 'tooltip-title';
-            
-            // Different tooltip content for enemy vs friendly heroes
-            if (item.counters) {
-                // This is a friendly hero's item
-                tooltipTitle.textContent = 'Counters These Selected Heroes:';
+            const itemName = document.createElement('h3');
+            itemName.textContent = item.name;
+            header.appendChild(itemName);
+
+            const counterCount = document.createElement('span');
+            counterCount.className = 'counter-count';
+            const countText = item.also_counters.length > 0 
+                ? `Counters ${item.also_counters.length + 1} heroes` 
+                : 'Counters 1 hero';
+            counterCount.textContent = countText;
+            header.appendChild(counterCount);
+
+            card.appendChild(header);
+
+            if (item.also_counters.length > 0) {
+                const tooltip = document.createElement('div');
+                tooltip.className = 'tooltip';
+                
+                const tooltipTitle = document.createElement('div');
+                tooltipTitle.className = 'tooltip-title';
+                tooltipTitle.textContent = 'Also counters:';
                 tooltip.appendChild(tooltipTitle);
-                
-                item.counters.forEach(counter => {
-                    const heroDiv = document.createElement('div');
-                    heroDiv.className = 'tooltip-hero';
-                    
-                    const hero = heroes.find(h => h.name === counter.name);
-                    if (hero) {
-                        const heroImg = document.createElement('img');
-                        heroImg.src = hero.image_url;
-                        heroImg.alt = hero.name;
-                        heroImg.onerror = function() {
-                            this.src = '/static/images/heroes/placeholder.png';
-                        };
-                        heroDiv.appendChild(heroImg);
-                        
-                        const heroName = document.createElement('span');
-                        heroName.textContent = hero.name;
-                        heroDiv.appendChild(heroName);
-                        
-                        tooltip.appendChild(heroDiv);
-                    }
+
+                const countersList = document.createElement('ul');
+                item.also_counters.forEach(counter => {
+                    const li = document.createElement('li');
+                    li.textContent = counter.name;
+                    countersList.appendChild(li);
                 });
-            } else {
-                // This is an enemy hero's counter item
-                tooltipTitle.textContent = 'Counter Item Against:';
-                tooltip.appendChild(tooltipTitle);
+                tooltip.appendChild(countersList);
                 
-                // Show the main hero and any other countered heroes
-                const allCounteredHeroes = [{ name: heroName }];
-                if (item.also_counters) {
-                    allCounteredHeroes.push(...item.also_counters);
-                }
-                
-                allCounteredHeroes.forEach(counter => {
-                    const heroDiv = document.createElement('div');
-                    heroDiv.className = 'tooltip-hero';
-                    
-                    const hero = heroes.find(h => h.name === counter.name);
-                    if (hero) {
-                        const heroImg = document.createElement('img');
-                        heroImg.src = hero.image_url;
-                        heroImg.alt = hero.name;
-                        heroImg.onerror = function() {
-                            this.src = '/static/images/heroes/placeholder.png';
-                        };
-                        heroDiv.appendChild(heroImg);
-                        
-                        const heroName = document.createElement('span');
-                        heroName.textContent = hero.name;
-                        heroDiv.appendChild(heroName);
-                        
-                        tooltip.appendChild(heroDiv);
-                    }
-                });
+                card.appendChild(tooltip);
             }
 
-            card.appendChild(tooltip);
-            
             return card;
         }
 
         displayHeroes();
-    </script>
+        </script>
+    </div>
 </body>
 </html>

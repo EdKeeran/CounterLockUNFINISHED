@@ -29,6 +29,10 @@ ENV/
 *.db
 *.sqlite3
 
+# Credentials
+credentials/
+*.json
+
 # IDE
 .idea/
 .vscode/

@@ -76,9 +76,8 @@ def get_heroes():
 @app.route('/api/team_analysis', methods=['POST'])
 def analyze_teams():
     enemy_team = request.json.get('enemy_team', [])
-    friendly_team = request.json.get('friendly_team', [])
     
-    print(f"Analyzing teams - Enemy: {enemy_team}, Friendly: {friendly_team}")
+    print(f"Analyzing enemy team: {enemy_team}")
     
     # Get all heroes
     heroes = {h.id: h for h in Hero.query.all()}
@@ -124,47 +123,9 @@ def analyze_teams():
             'counter_items': sorted(counter_items, key=lambda x: (-len(x['also_counters']), x['name']))
         }
     
-    # Get items for friendly heroes from Google Sheets
-    friendly_analysis = {}
-    for hero_id in friendly_team:
-        hero = heroes[hero_id]
-        print(f"\nAnalyzing friendly hero: {hero.name}")
-        
-        # Get hero's items from Google Sheets
-        hero_items = get_hero_items(hero.name)
-        print(f"Found {len(hero_items)} items for {hero.name} in sheet")
-        items_data = []
-        
-        for item_name in hero_items:
-            if item_name in items:
-                item = items[item_name]
-                # Check which enemies this item counters
-                countered_enemies = []
-                for enemy_id in enemy_team:
-                    enemy = heroes[enemy_id]
-                    if item_name in get_hero_counters(enemy.name):
-                        countered_enemies.append({
-                            'name': enemy.name
-                        })
-                
-                if countered_enemies:  # Only include items that counter enemies
-                    items_data.append({
-                        'id': item.id,
-                        'name': item.name,
-                        'category': item.category,
-                        'counters': sorted(countered_enemies, key=lambda x: x['name'])
-                    })
-        
-        print(f"Found {len(items_data)} valid items for {hero.name}")
-        friendly_analysis[hero_id] = {
-            'hero_name': hero.name,
-            'items': sorted(items_data, key=lambda x: (-len(x['counters']), x['name']))
-        }
-    
     print("\nSending analysis response")
     return jsonify({
-        'enemy_analysis': enemy_analysis,
-        'friendly_analysis': friendly_analysis
+        'enemy_analysis': enemy_analysis
     })
 
 # Initialize database when starting the app
