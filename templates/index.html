@@ -73,31 +73,30 @@
         }
         .hero-button {
             position: relative;
-            background: rgba(0, 0, 0, 0.6);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 8px;
+            background: none;
+            border: 3px solid rgba(255, 255, 255, 0.2);
+            border-radius: 10px;
             padding: 0;
             cursor: pointer;
-            transition: all 0.2s ease;
+            transition: all 0.3s ease;
             width: 100%;
             aspect-ratio: 1;
             overflow: hidden;
         }
         .hero-button:hover {
-            transform: translateY(-2px);
-            border-color: rgba(255, 255, 255, 0.3);
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+            border-color: rgba(255, 255, 255, 0.5);
+            transform: scale(1.05);
         }
         .hero-button.selected {
-            background: rgba(124, 187, 30, 0.3);
-            border-color: #7CBB1E;
-            box-shadow: 0 0 10px rgba(124, 187, 30, 0.3);
+            border-color: #000000;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 1);
+            background: #ae00ff;
         }
         .hero-button img {
             width: 100%;
             height: 100%;
             object-fit: cover;
-            border-radius: 6px;
+            border-radius: 7px;
         }
         .hero-name {
             position: absolute;
@@ -151,13 +150,13 @@
         }
         .item-card {
             background: rgba(0, 0, 0, 0.4);
-            border-radius: 16px;
-            padding: 30px;
+            border-radius: 12px;
+            padding: 20px;
             transition: transform 0.2s, box-shadow 0.2s;
             position: relative;
             display: grid;
             grid-template-columns: auto 1fr;
-            gap: 30px;
+            gap: 15px;
             align-items: start;
         }
         .item-card:hover {
@@ -177,31 +176,31 @@
             border: 1px solid #7CBB1E;
         }
         .item-image {
-            width: 140px;
-            height: 140px;
-            border-radius: 12px;
-            border: 3px solid rgba(255, 255, 255, 0.2);
+            width: 80px;
+            height: 80px;
+            border-radius: 8px;
+            border: 2px solid rgba(255, 255, 255, 0.2);
             background: rgba(0, 0, 0, 0.3);
         }
         .item-content {
             display: flex;
             flex-direction: column;
-            gap: 20px;
+            gap: 12px;
             flex: 1;
         }
         .item-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding-bottom: 15px;
-            border-bottom: 2px solid rgba(255, 255, 255, 0.1);
+            padding-bottom: 8px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
         }
         .item-name {
-            font-size: 1.8em;
+            font-size: 1.4em;
             color: #ffffff;
             font-weight: bold;
             margin: 0;
-            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
         }
         .counter-count {
             font-size: 1.1em;

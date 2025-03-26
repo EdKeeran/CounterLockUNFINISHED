@@ -63,13 +63,17 @@ with app.app_context():
         ]
     }
     
-    # Add items to database
-    item_objects = {}
+    # Add items to database with image paths
     for category, items in item_categories.items():
         for item_name in items:
-            item = Item(name=item_name, category=category)
+            # Use the exact item name and category for the image path
+            item = Item(
+                name=item_name,
+                category=category,
+                image_path=f"images/items/{category}/{item_name}.png"
+            )
             db.session.add(item)
-            item_objects[item_name] = item
 
+    # Commit all changes
     db.session.commit()
     print("Database populated successfully!")

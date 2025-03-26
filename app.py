@@ -5,7 +5,9 @@ import os
 import json
 from sheets_integration import get_hero_items, get_hero_counters
 
-app = Flask(__name__)
+app = Flask(__name__, 
+           static_folder='../CounterLock/static',  # Use the original project's static folder
+           static_url_path='/static')
 
 # Use SQLite for local development, but store in /tmp for Render deployment
 if os.environ.get('RENDER'):
