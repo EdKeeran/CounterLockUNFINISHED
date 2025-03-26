@@ -113,10 +113,11 @@
         }
         .recommendations {
             margin-top: 20px;
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            display: flex;
+            flex-direction: column;
             gap: 20px;
             padding: 20px;
+            width: 100%;
         }
         .hero-section {
             background: rgba(0, 0, 0, 0.6);
@@ -150,14 +151,18 @@
         }
         .item-card {
             background: rgba(0, 0, 0, 0.4);
-            border-radius: 8px;
-            padding: 15px;
+            border-radius: 16px;
+            padding: 30px;
             transition: transform 0.2s, box-shadow 0.2s;
             position: relative;
+            display: grid;
+            grid-template-columns: auto 1fr;
+            gap: 30px;
+            align-items: start;
         }
         .item-card:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+            transform: translateY(-3px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.4);
         }
         .item-card.weaponitems {
             background: linear-gradient(135deg, rgba(221, 150, 66, 0.3), rgba(221, 150, 66, 0.1));
@@ -171,47 +176,60 @@
             background: linear-gradient(135deg, rgba(124, 187, 30, 0.3), rgba(124, 187, 30, 0.1));
             border: 1px solid #7CBB1E;
         }
+        .item-image {
+            width: 140px;
+            height: 140px;
+            border-radius: 12px;
+            border: 3px solid rgba(255, 255, 255, 0.2);
+            background: rgba(0, 0, 0, 0.3);
+        }
+        .item-content {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            flex: 1;
+        }
         .item-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 12px;
-            padding-bottom: 8px;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            padding-bottom: 15px;
+            border-bottom: 2px solid rgba(255, 255, 255, 0.1);
         }
         .item-name {
-            font-size: 1.2em;
+            font-size: 1.8em;
             color: #ffffff;
             font-weight: bold;
             margin: 0;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
         }
         .counter-count {
-            font-size: 0.9em;
-            padding: 4px 8px;
-            border-radius: 4px;
-            background: rgba(255, 255, 255, 0.1);
+            font-size: 1.1em;
+            padding: 8px 16px;
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.15);
+            font-weight: 500;
         }
         .countered-heroes {
             display: flex;
             flex-wrap: wrap;
-            gap: 8px;
-            margin-top: 10px;
+            gap: 15px;
         }
         .hero-tag {
-            background: rgba(255, 255, 255, 0.1);
-            padding: 6px 10px;
-            border-radius: 6px;
-            font-size: 0.9em;
+            background: rgba(255, 255, 255, 0.15);
+            padding: 8px 12px;
+            border-radius: 8px;
+            font-size: 1.1em;
             color: #ffffff;
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 10px;
         }
         .hero-tag img {
-            width: 32px;
-            height: 32px;
-            border-radius: 4px;
-            border: 1px solid rgba(255, 255, 255, 0.2);
+            width: 40px;
+            height: 40px;
+            border-radius: 6px;
+            border: 2px solid rgba(255, 255, 255, 0.2);
         }
         .tooltip {
             display: none;
@@ -370,6 +388,17 @@
                 const itemCard = document.createElement('div');
                 itemCard.className = `item-card ${item.category.toLowerCase()}`;
 
+                // Item image
+                const itemImage = document.createElement('img');
+                itemImage.className = 'item-image';
+                itemImage.src = item.image_path;
+                itemImage.alt = item.name;
+                itemImage.onerror = () => { itemImage.src = '/static/images/items/placeholder.png'; };
+
+                // Item content container
+                const itemContent = document.createElement('div');
+                itemContent.className = 'item-content';
+
                 // Item header with name and counter count
                 const header = document.createElement('div');
                 header.className = 'item-header';
@@ -384,7 +413,7 @@
 
                 header.appendChild(itemName);
                 header.appendChild(counterCount);
-                itemCard.appendChild(header);
+                itemContent.appendChild(header);
 
                 // Countered heroes section
                 const heroesContainer = document.createElement('div');
@@ -407,7 +436,9 @@
                     heroesContainer.appendChild(heroTag);
                 });
 
-                itemCard.appendChild(heroesContainer);
+                itemContent.appendChild(heroesContainer);
+                itemCard.appendChild(itemImage);
+                itemCard.appendChild(itemContent);
                 container.appendChild(itemCard);
             });
         }
