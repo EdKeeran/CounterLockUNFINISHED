@@ -164,9 +164,18 @@
             width: 80px;
             height: 80px;
             border-radius: 8px;
-            border: 2px solid rgba(255, 255, 255, 0.3);
+            border: 3px solid #312406;
             background: rgba(0, 0, 0, 0.4);
             transition: all 0.3s ease;
+        }
+        .item-card.weaponitems .item-image {
+            border-color: #312406;
+        }
+        .item-card.spirititems .item-image {
+            border-color: #372248;
+        }
+        .item-card.vitalityitems .item-image {
+            border-color: #203500;
         }
         .item-card:hover .item-image {
             border-color: rgba(255, 255, 255, 0.5);
@@ -267,19 +276,16 @@
             margin-bottom: 0;
         }
         .item-card.weaponitems {
-            background: linear-gradient(135deg, rgba(221, 150, 66, 0.4), rgba(221, 150, 66, 0.1));
-            border: 2px solid #DD9642;
-            box-shadow: 0 4px 12px rgba(221, 150, 66, 0.2);
+            background: #DD9642;
+            border: 2px solid #312406;
         }
         .item-card.spirititems {
-            background: linear-gradient(135deg, rgba(206, 145, 255, 0.4), rgba(206, 145, 255, 0.1));
-            border: 2px solid #CE91FF;
-            box-shadow: 0 4px 12px rgba(206, 145, 255, 0.2);
+            background: #CE91FF;
+            border: 2px solid #372248;
         }
         .item-card.vitalityitems {
-            background: linear-gradient(135deg, rgba(124, 187, 30, 0.4), rgba(124, 187, 30, 0.1));
-            border: 2px solid #7CBB1E;
-            box-shadow: 0 4px 12px rgba(124, 187, 30, 0.2);
+            background: #7CBB1E;
+            border: 2px solid #203500;
         }
     </style>
 </head>
