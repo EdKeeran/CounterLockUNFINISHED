@@ -25,52 +25,52 @@ with app.app_context():
     # Map item names to their categories
     item_categories = {
         'SpiritItems': [
-            'AmmoScavenger', 'ArcaneSurge', 'BoundlessSpirit', 'BulletResistShredder',
-            'ColdFront', 'Curse', 'Decay', 'DivinersKevlar', 'DurationExtender',
-            'EchoShard', 'EscalatingExposure', 'EtherealShift', 'ExtraCharge',
-            'ExtraSpirit', 'ImprovedBurst', 'ImprovedCooldown', 'ImprovedReach',
-            'ImprovedSpirit', 'Infuser', 'Knockdown', 'MagicCarpet', 'MysticBurst',
-            'MysticReach', 'MysticReverb', 'MysticSlow', 'MysticVulnerability',
-            'QuickSilverReload', 'RapidRecharge', 'Refresher', 'SilenceGlyph',
-            'SlowingHex', 'SpiritSnatch', 'SpiritStrike', 'SuperiorCooldown',
-            'SuperiorDuration', 'Suppressor', 'SurgeofPower', 'TormentPulse',
-            'WitheringWhip'
+            'Ammo Scavenger', 'Arcane Surge', 'Boundless Spirit', 'Bullet Resist Shredder',
+            'Cold Front', 'Curse', 'Decay', 'Diviners Kevlar', 'Duration Extender',
+            'Echo Shard', 'Escalating Exposure', 'Ethereal Shift', 'Extra Charge',
+            'Extra Spirit', 'Improved Burst', 'Improved Cooldown', 'Improved Reach',
+            'Improved Spirit', 'Infuser', 'Knockdown', 'Magic Carpet', 'Mystic Burst',
+            'Mystic Reach', 'Mystic Reverb', 'Mystic Slow', 'Mystic Vulnerability',
+            'Quick Silver Reload', 'Rapid Recharge', 'Refresher', 'Silence Glyph',
+            'Slowing Hex', 'Spirit Snatch', 'Spirit Strike', 'Superior Cooldown',
+            'Superior Duration', 'Suppressor', 'Surge Of Power', 'Torment Pulse',
+            'Withering Whip'
         ],
         'VitalityItems': [
-            'BulletArmor', 'PhantomStrike', 'BulletLifesteal', 'ReactiveBarrier',
-            'Colossus', 'RescueBeam', 'CombatBarrier', 'RestorativeLocket',
-            'DebuffReducer', 'ReturnFire', 'DebuffRemover', 'SiphonBullets',
-            'DivineBarrier', 'SoulRebirth', 'EnchantersBarrier', 'SpiritArmor',
-            'EnduringSpeed', 'SpiritLifesteal', 'EnduringSpirit', 'SprintBoots',
-            'ExtraHealth', 'SuperiorStamina', 'ExtraRegen', 'Unstoppable',
-            'ExtraStamina', 'VeilWalker', 'Fortitude', 'Healbane',
-            'HealingBooster', 'HealingRite', 'HealthNova', 'ImprovedBulletArmor',
-            'ImprovedSpiritArmor', 'Inhibitor', 'Leech', 'Lifestrike',
-            'MajesticLeap', 'MeleeLifesteal', 'MetalSkin'
+            'Bullet Armor', 'Phantom Strike', 'Bullet Lifesteal', 'Reactive Barrier',
+            'Colossus', 'Rescue Beam', 'Combat Barrier', 'Restorative Locket',
+            'Debuff Reducer', 'Return Fire', 'Debuff Remover', 'Siphon Bullets',
+            'Divine Barrier', 'Soul Rebirth', 'Enchanters Barrier', 'Spirit Armor',
+            'Enduring Speed', 'Spirit Lifesteal', 'Enduring Spirit', 'Sprint Boots',
+            'Extra Health', 'Superior Stamina', 'Extra Regen', 'Unstoppable',
+            'Extra Stamina', 'Veil Walker', 'Fortitude', 'Healbane',
+            'Healing Booster', 'Healing Rite', 'Health Nova', 'Improved Bullet Armor',
+            'Improved Spirit Armor', 'Inhibitor', 'Leech', 'Lifestrike',
+            'Majestic Leap', 'Melee Lifesteal', 'Metal Skin'
         ],
         'WeaponItems': [
-            'ActiveReload', 'PristineEmblem', 'AlchemicalFire', 'RapidRounds',
-            'BasicMagazine', 'Ricochet', 'ShadowWeave', 'Berserker', 'BurstFire',
-            'CloseQuarters', 'CripplingHeadshot', 'EscalatingResilience',
-            'Sharpshooter', 'Silencer', 'SlowingBullets', 'SoulShredderBullets',
-            'Fleetfoot', 'SpellslingerHeadshot', 'Frenzy', 'SpiritualOverflow',
-            'GlassCannon', 'SwiftStriker', 'HeadHunter', 'TeslaBullets',
-            'HeadshotBooster', 'TitanicMagazine', 'HeroicAura', 'ToxicBullets',
-            'HighVelocityMag', 'VampiricBurst', 'HollowPointWard', 'WarpStone',
-            'HuntersAura', 'IntensifyingMagazine', 'KineticDash', 'LongRange',
-            'LuckyShot', 'MedicBullets', 'MeleeCharge', 'MonsterRounds',
-            'MysticShot', 'PointBlank'
+            'Active Reload', 'Pristine Emblem', 'Alchemical Fire', 'Rapid Rounds',
+            'Basic Magazine', 'Ricochet', 'Shadow Weave', 'Berserker', 'Burst Fire',
+            'CloseQuarters', 'Crippling Headshot', 'Escalating Resilience',
+            'Sharpshooter', 'Silencer', 'Slowing Bullets', 'Soul Shredder Bullets',
+            'Fleetfoot', 'SpellslingerHeadshot', 'Frenzy', 'Spiritual Overflow',
+            'Glass Cannon', 'Swift Striker', 'Head Hunter', 'Tesla Bullets',
+            'Headshot Booster', 'Titanic Magazine', 'Heroic Aura', 'Toxic Bullets',
+            'High Velocity Mag', 'Vampiric Burst', 'Hollow Point Ward', 'Warp Stone',
+            'Hunters Aura', 'Intensifying Magazine', 'Kinetic Dash', 'Long Range',
+            'Lucky Shot', 'Medic Bullets', 'Melee Charge', 'Monster Rounds',
+            'Mystic Shot', 'Point Blank'
         ]
     }
     
     # Add items to database with image paths
     for category, items in item_categories.items():
         for item_name in items:
-            # Use the exact item name and category for the image path
+            # Use the exact item name and category for the image path, but remove spaces for the image filename
             item = Item(
                 name=item_name,
                 category=category,
-                image_path=f"images/items/{category}/{item_name}.png"
+                image_path=f"images/items/{category}/{item_name.replace(' ', '')}.png"
             )
             db.session.add(item)
 
