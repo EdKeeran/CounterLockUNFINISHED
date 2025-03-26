@@ -85,48 +85,56 @@ def analyze_teams():
     
     print(f"Found {len(heroes)} heroes and {len(items)} items in database")
     
-    # Organize counters by enemy hero
-    enemy_analysis = {}
-    for hero_id in enemy_team:
-        hero = heroes[hero_id]
-        print(f"\nAnalyzing enemy hero: {hero.name}")
-        
-        # Get counter items from Google Sheets
-        counter_items = []
-        sheet_items = get_hero_counters(hero.name)
-        print(f"Found {len(sheet_items)} counter items for {hero.name} in sheet")
-        
-        for item_name in sheet_items:
-            if item_name in items:
-                item = items[item_name]
-                # Find other enemy heroes that are also countered by this item
-                other_countered_heroes = []
-                for other_id in enemy_team:
-                    if other_id != hero_id:
-                        other_hero = heroes[other_id]
-                        other_counters = get_hero_counters(other_hero.name)
-                        if item_name in other_counters:
-                            other_countered_heroes.append({
-                                'name': other_hero.name
-                            })
-                
-                counter_items.append({
-                    'id': item.id,
-                    'name': item.name,
-                    'category': item.category,
-                    'also_counters': other_countered_heroes
-                })
-        
-        print(f"Found {len(counter_items)} valid counter items for {hero.name}")
-        enemy_analysis[hero_id] = {
-            'hero_name': hero.name,
-            'counter_items': sorted(counter_items, key=lambda x: (-len(x['also_counters']), x['name']))
-        }
+    # Organize counters by item instead of by hero
+    item_analysis = {}
     
-    print("\nSending analysis response")
-    return jsonify({
-        'enemy_analysis': enemy_analysis
-    })
+    try:
+        for hero_id in enemy_team:
+            hero = heroes.get(hero_id)
+            if not hero:
+                continue
+                
+            print(f"\nAnalyzing enemy hero: {hero.name}")
+            
+            # Get counter items from Google Sheets
+            sheet_items = get_hero_counters(hero.name)
+            print(f"Found {len(sheet_items)} counter items for {hero.name} in sheet")
+            
+            for item_name in sheet_items:
+                if item_name in items:
+                    item = items[item_name]
+                    if item_name not in item_analysis:
+                        item_analysis[item_name] = {
+                            'id': item.id,
+                            'name': item.name,
+                            'category': item.category,
+                            'image_path': url_for('static', filename=item.image_path),
+                            'countered_heroes': []
+                        }
+                    item_analysis[item_name]['countered_heroes'].append({
+                        'id': hero.id,
+                        'name': hero.name,
+                        'image_path': url_for('static', filename=hero.image_path)
+                    })
+        
+        # Convert to list and sort by number of heroes countered
+        sorted_items = []
+        for item_data in item_analysis.values():
+            if len(item_data['countered_heroes']) >= 2:  # Only include items that counter 2+ heroes
+                sorted_items.append(item_data)
+        
+        sorted_items.sort(key=lambda x: (-len(x['countered_heroes']), x['name']))
+        
+        print("\nSending analysis response")
+        return jsonify({
+            'item_analysis': sorted_items
+        })
+    except Exception as e:
+        print(f"Error in analyze_teams: {str(e)}")
+        return jsonify({
+            'error': 'An error occurred while analyzing teams',
+            'item_analysis': []
+        }), 500
 
 # Initialize database when starting the app
 init_db()
