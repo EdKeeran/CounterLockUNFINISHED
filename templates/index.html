@@ -152,35 +152,25 @@
             background: rgba(0, 0, 0, 0.4);
             border-radius: 12px;
             padding: 20px;
-            transition: transform 0.2s, box-shadow 0.2s;
             position: relative;
             display: grid;
             grid-template-columns: auto 1fr;
             gap: 15px;
             align-items: start;
-        }
-        .item-card:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.4);
-        }
-        .item-card.weaponitems {
-            background: linear-gradient(135deg, rgba(221, 150, 66, 0.3), rgba(221, 150, 66, 0.1));
-            border: 1px solid #DD9642;
-        }
-        .item-card.spirititems {
-            background: linear-gradient(135deg, rgba(206, 145, 255, 0.3), rgba(206, 145, 255, 0.1));
-            border: 1px solid #CE91FF;
-        }
-        .item-card.vitalityitems {
-            background: linear-gradient(135deg, rgba(124, 187, 30, 0.3), rgba(124, 187, 30, 0.1));
-            border: 1px solid #7CBB1E;
+            margin-bottom: 15px;
+            backdrop-filter: blur(5px);
         }
         .item-image {
             width: 80px;
             height: 80px;
             border-radius: 8px;
-            border: 2px solid rgba(255, 255, 255, 0.2);
-            background: rgba(0, 0, 0, 0.3);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            background: rgba(0, 0, 0, 0.4);
+            transition: all 0.3s ease;
+        }
+        .item-card:hover .item-image {
+            border-color: rgba(255, 255, 255, 0.5);
+            transform: scale(1.05);
         }
         .item-content {
             display: flex;
@@ -192,22 +182,25 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding-bottom: 8px;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            padding-bottom: 10px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.15);
         }
         .item-name {
             font-size: 1.4em;
             color: #ffffff;
             font-weight: bold;
             margin: 0;
-            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+            letter-spacing: 0.5px;
         }
         .counter-count {
             font-size: 1.1em;
-            padding: 8px 16px;
-            border-radius: 8px;
-            background: rgba(255, 255, 255, 0.15);
+            color: rgba(255, 255, 255, 0.9);
             font-weight: 500;
+            padding: 4px 10px;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 6px;
+            backdrop-filter: blur(2px);
         }
         .countered-heroes {
             display: flex;
@@ -272,6 +265,21 @@
         }
         .tooltip li:last-child {
             margin-bottom: 0;
+        }
+        .item-card.weaponitems {
+            background: linear-gradient(135deg, rgba(221, 150, 66, 0.4), rgba(221, 150, 66, 0.1));
+            border: 2px solid #DD9642;
+            box-shadow: 0 4px 12px rgba(221, 150, 66, 0.2);
+        }
+        .item-card.spirititems {
+            background: linear-gradient(135deg, rgba(206, 145, 255, 0.4), rgba(206, 145, 255, 0.1));
+            border: 2px solid #CE91FF;
+            box-shadow: 0 4px 12px rgba(206, 145, 255, 0.2);
+        }
+        .item-card.vitalityitems {
+            background: linear-gradient(135deg, rgba(124, 187, 30, 0.4), rgba(124, 187, 30, 0.1));
+            border: 2px solid #7CBB1E;
+            box-shadow: 0 4px 12px rgba(124, 187, 30, 0.2);
         }
     </style>
 </head>
