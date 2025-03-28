@@ -169,13 +169,51 @@
             margin-bottom: 15px;
             backdrop-filter: blur(5px);
         }
-        .item-image {
+        /* Container for item image and tooltip */
+        .item-card > div:first-child {
+            position: relative;
             width: 80px;
             height: 80px;
+        }
+
+        .item-image {
+            width: 100%;
+            height: 100%;
             border-radius: 8px;
             border: 3px solid #312406;
             background: rgba(0, 0, 0, 0.4);
             transition: all 0.3s ease;
+        }
+
+        /* Tooltip image styles */
+        .tooltip-image {
+            position: absolute;
+            top: 50%;
+            left: 100%;  
+            transform: translate(10px, -50%);  
+            width: 300px;
+            height: auto;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+            z-index: 1000;
+            background-color: rgba(0, 0, 0, 0.9);
+            padding: 5px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+        }
+        
+        /* For items near the right edge of the screen */
+        @media (max-width: 768px) {
+            .tooltip-image {
+                left: auto;
+                right: 100%;
+                transform: translate(-10px, -50%);
+            }
+        }
+
+        .item-card:hover .tooltip-image {
+            opacity: 1;
         }
         .item-card.weaponitems .item-image {
             border-color: #312406;
@@ -249,49 +287,6 @@
             height: 40px;
             border-radius: 6px;
             border: 2px solid rgba(255, 255, 255, 0.2);
-        }
-        .tooltip {
-            display: none;
-            position: absolute;
-            bottom: 100%;
-            left: 50%;
-            transform: translateX(-50%);
-            background: rgba(0, 0, 0, 0.95);
-            padding: 10px;
-            border-radius: 6px;
-            min-width: 200px;
-            z-index: 100;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-        }
-        .item-card:hover .tooltip {
-            display: block;
-        }
-        .tooltip-title {
-            font-size: 0.9em;
-            color: #ffffff;
-            margin-bottom: 8px;
-            text-align: center;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
-            padding-bottom: 5px;
-        }
-        .tooltip ul {
-            list-style: none;
-            padding: 0;
-            margin: 0;
-        }
-        .tooltip li {
-            font-size: 0.9em;
-            color: #ffffff;
-            padding: 4px 8px;
-            margin-bottom: 4px;
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 4px;
-        }
-        .tooltip li:last-child {
-            margin-bottom: 0;
         }
         .item-card.weaponitems {
             background: #DD9642;
@@ -441,14 +436,41 @@
                 const itemCard = document.createElement('div');
                 itemCard.className = `item-card ${item.category.toLowerCase()}`;
 
-                // Item image
+                // Item image container
+                const imageContainer = document.createElement('div');
+                imageContainer.style.position = 'relative';
+                imageContainer.style.width = '80px';
+                imageContainer.style.height = '80px';
+
+                // Main item image
                 const itemImage = document.createElement('img');
                 itemImage.className = 'item-image';
                 itemImage.src = item.image_path;
                 itemImage.alt = item.name;
                 itemImage.onerror = () => { itemImage.src = '/static/images/items/placeholder.png'; };
 
-                // Item content container
+                // Tooltip image with correct path and naming convention
+                const tooltipImage = document.createElement('img');
+                tooltipImage.className = 'tooltip-image';
+                // Extract the category from the image path
+                const pathParts = item.image_path.split('/');
+                const category = pathParts[pathParts.length - 2];  // Gets "SpiritItems", "VitalityItems", etc.
+                
+                // Construct the tooltip path
+                const tooltipPath = `/static/images/items/${category}/ToolTips/${item.name.replace(/\s+/g, '')}_ToolTip.png`;
+                console.log('Tooltip path:', tooltipPath); // Debug log
+                tooltipImage.src = tooltipPath;
+                tooltipImage.alt = `${item.name} tooltip`;
+                tooltipImage.onerror = () => {
+                    console.log('Failed to load tooltip:', tooltipPath); // Debug log
+                    tooltipImage.style.display = 'none';
+                };
+
+                imageContainer.appendChild(itemImage);
+                imageContainer.appendChild(tooltipImage);
+                itemCard.appendChild(imageContainer);
+
+                // Rest of the item card content
                 const itemContent = document.createElement('div');
                 itemContent.className = 'item-content';
 
@@ -490,7 +512,6 @@
                 });
 
                 itemContent.appendChild(heroesContainer);
-                itemCard.appendChild(itemImage);
                 itemCard.appendChild(itemContent);
                 container.appendChild(itemCard);
             });
