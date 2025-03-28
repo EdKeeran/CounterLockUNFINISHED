@@ -536,8 +536,8 @@
                 // Set up tooltip behavior
                 const pathParts = item.image_path.split('/');
                 const category = pathParts[pathParts.length - 2];
-                const tooltipItemName = item.name.replace(/\s+/g, '');
-                const tooltipPath = `/static/images/items/${category}/ToolTips/${tooltipItemName}_Tooltip.png`;
+                const itemBaseName = pathParts[pathParts.length - 1].split('.')[0];
+                const tooltipPath = `/static/images/items/${category}/ToolTips/${itemBaseName}_ToolTip.png`;
 
                 // Show tooltip on hover with throttling
                 let isHovered = false;

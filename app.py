@@ -72,7 +72,7 @@ def get_heroes():
     return jsonify([{
         'id': h.id,
         'name': h.name,
-        'image_url': url_for('static', filename=h.image_path)
+        'image_url': url_for('static', filename=h.image_path.replace(' ', ''))  # Remove spaces from image path
     } for h in heroes])
 
 @app.route('/api/team_analysis', methods=['POST'])
@@ -98,14 +98,14 @@ def analyze_team():
                         if item:
                             item_analysis[item_name] = {
                                 'name': item.name,
-                                'image_path': url_for('static', filename=item.image_path),
+                                'image_path': url_for('static', filename=item.image_path.replace(' ', '')),  # Remove spaces from image path
                                 'category': item.category,
                                 'countered_heroes': []
                             }
                     if item_name in item_analysis:
                         item_analysis[item_name]['countered_heroes'].append({
                             'name': hero.name,
-                            'image_path': url_for('static', filename=hero.image_path),
+                            'image_path': url_for('static', filename=hero.image_path.replace(' ', '')),  # Remove spaces from image path
                             'counter_reason': counter_reason
                         })
         
