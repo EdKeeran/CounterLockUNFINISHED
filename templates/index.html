@@ -51,6 +51,7 @@
             border-radius: 10px;
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.5);
             overflow-x: hidden;
+            overflow: visible !important;
         }
         h1 {
             color: #ffffff;
@@ -123,6 +124,7 @@
             gap: 20px;
             padding: 20px;
             width: 100%;
+            overflow: visible !important;
         }
         .hero-section {
             background: rgba(0, 0, 0, 0.6);
@@ -156,6 +158,7 @@
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
             gap: 10px;
+            overflow: visible !important;
         }
         .item-card {
             background: rgba(0, 0, 0, 0.4);
@@ -168,12 +171,14 @@
             align-items: start;
             margin-bottom: 15px;
             backdrop-filter: blur(5px);
+            overflow: visible !important;
         }
         /* Container for item image and tooltip */
         .item-card > div:first-child {
             position: relative;
             width: 80px;
             height: 80px;
+            overflow: visible;
         }
 
         .item-image {
@@ -187,20 +192,17 @@
 
         /* Tooltip image styles */
         .tooltip-image {
-            position: absolute;
-            top: 50%;
-            left: 100%;  
-            transform: translate(10px, -50%);  
-            width: 300px;
-            height: auto;
+            position: fixed;
             opacity: 0;
             pointer-events: none;
             transition: opacity 0.3s ease;
-            z-index: 1000;
+            z-index: 9999;
             background-color: rgba(0, 0, 0, 0.9);
             padding: 5px;
             border-radius: 8px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+            width: 300px;
+            height: auto;
         }
         
         /* For items near the right edge of the screen */
@@ -343,7 +345,42 @@
 
         <script>
         let selectedEnemyTeam = [];
-        
+        let currentTooltip = null;  // Global tooltip reference
+
+        // Create a single tooltip element
+        function createTooltip() {
+            if (!currentTooltip) {
+                currentTooltip = document.createElement('img');
+                currentTooltip.className = 'tooltip-image';
+                currentTooltip.style.display = 'none';
+                document.body.appendChild(currentTooltip);
+            }
+            return currentTooltip;
+        }
+
+        // Function to show tooltip
+        function showTooltip(container, tooltipPath, itemName) {
+            const tooltip = createTooltip();
+            tooltip.src = tooltipPath;
+            tooltip.alt = `${itemName} tooltip`;
+            
+            const rect = container.getBoundingClientRect();
+            tooltip.style.display = 'block';
+            tooltip.style.opacity = '1';
+            tooltip.style.left = rect.right + 10 + 'px';
+            tooltip.style.top = rect.top + (rect.height / 2) - (tooltip.offsetHeight / 2) + 'px';
+        }
+
+        // Function to hide tooltip
+        function hideTooltip() {
+            if (currentTooltip) {
+                currentTooltip.style.opacity = '0';
+                setTimeout(() => {
+                    currentTooltip.style.display = 'none';
+                }, 300);
+            }
+        }
+
         function displayHeroes() {
             fetch('/api/heroes')
                 .then(response => response.json())
@@ -449,25 +486,19 @@
                 itemImage.alt = item.name;
                 itemImage.onerror = () => { itemImage.src = '/static/images/items/placeholder.png'; };
 
-                // Tooltip image with correct path and naming convention
-                const tooltipImage = document.createElement('img');
-                tooltipImage.className = 'tooltip-image';
-                // Extract the category from the image path
+                // Set up tooltip behavior
                 const pathParts = item.image_path.split('/');
-                const category = pathParts[pathParts.length - 2];  // Gets "SpiritItems", "VitalityItems", etc.
-                
-                // Construct the tooltip path
+                const category = pathParts[pathParts.length - 2];
                 const tooltipPath = `/static/images/items/${category}/ToolTips/${item.name.replace(/\s+/g, '')}_ToolTip.png`;
-                console.log('Tooltip path:', tooltipPath); // Debug log
-                tooltipImage.src = tooltipPath;
-                tooltipImage.alt = `${item.name} tooltip`;
-                tooltipImage.onerror = () => {
-                    console.log('Failed to load tooltip:', tooltipPath); // Debug log
-                    tooltipImage.style.display = 'none';
-                };
+
+                // Show tooltip on hover
+                imageContainer.addEventListener('mouseenter', () => {
+                    showTooltip(imageContainer, tooltipPath, item.name);
+                });
+
+                imageContainer.addEventListener('mouseleave', hideTooltip);
 
                 imageContainer.appendChild(itemImage);
-                imageContainer.appendChild(tooltipImage);
                 itemCard.appendChild(imageContainer);
 
                 // Rest of the item card content
