@@ -195,7 +195,7 @@
             position: fixed;
             opacity: 0;
             pointer-events: none;
-            transition: opacity 0.3s ease;
+            transition: all 0.2s ease-out;  
             z-index: 9999;
             background-color: rgba(0, 0, 0, 0.9);
             padding: 5px;
@@ -203,6 +203,8 @@
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
             width: 300px;
             height: auto;
+            transform: translateZ(0);  
+            will-change: opacity, transform;  
         }
         
         /* For items near the right edge of the screen */
@@ -345,7 +347,9 @@
 
         <script>
         let selectedEnemyTeam = [];
-        let currentTooltip = null;  // Global tooltip reference
+        let currentTooltip = null;  
+        let tooltipTimeout = null;  
+        let isTooltipVisible = false;  
 
         // Create a single tooltip element
         function createTooltip() {
@@ -358,27 +362,44 @@
             return currentTooltip;
         }
 
-        // Function to show tooltip
+        // Function to show tooltip with debouncing
         function showTooltip(container, tooltipPath, itemName) {
-            const tooltip = createTooltip();
-            tooltip.src = tooltipPath;
-            tooltip.alt = `${itemName} tooltip`;
+            clearTimeout(tooltipTimeout);  
             
-            const rect = container.getBoundingClientRect();
-            tooltip.style.display = 'block';
-            tooltip.style.opacity = '1';
-            tooltip.style.left = rect.right + 10 + 'px';
-            tooltip.style.top = rect.top + (rect.height / 2) - (tooltip.offsetHeight / 2) + 'px';
+            const tooltip = createTooltip();
+            if (tooltip.src !== tooltipPath) {
+                tooltip.src = tooltipPath;
+                tooltip.alt = `${itemName} tooltip`;
+            }
+
+            // Only update position if not already visible
+            if (!isTooltipVisible) {
+                const rect = container.getBoundingClientRect();
+                tooltip.style.display = 'block';
+                tooltip.style.left = rect.right + 10 + 'px';
+                tooltip.style.top = rect.top + (rect.height / 2) - (tooltip.offsetHeight / 2) + 'px';
+                
+                // Force a reflow before showing
+                tooltip.offsetHeight;
+                tooltip.style.opacity = '1';
+                isTooltipVisible = true;
+            }
         }
 
-        // Function to hide tooltip
+        // Function to hide tooltip with debouncing
         function hideTooltip() {
-            if (currentTooltip) {
-                currentTooltip.style.opacity = '0';
-                setTimeout(() => {
-                    currentTooltip.style.display = 'none';
-                }, 300);
-            }
+            clearTimeout(tooltipTimeout);
+            tooltipTimeout = setTimeout(() => {
+                if (currentTooltip) {
+                    currentTooltip.style.opacity = '0';
+                    isTooltipVisible = false;
+                    setTimeout(() => {
+                        if (!isTooltipVisible) {  
+                            currentTooltip.style.display = 'none';
+                        }
+                    }, 200);  
+                }
+            }, 50);  
         }
 
         function displayHeroes() {
@@ -491,12 +512,23 @@
                 const category = pathParts[pathParts.length - 2];
                 const tooltipPath = `/static/images/items/${category}/ToolTips/${item.name.replace(/\s+/g, '')}_ToolTip.png`;
 
-                // Show tooltip on hover
+                // Show tooltip on hover with throttling
+                let isHovered = false;
                 imageContainer.addEventListener('mouseenter', () => {
+                    isHovered = true;
                     showTooltip(imageContainer, tooltipPath, item.name);
                 });
 
-                imageContainer.addEventListener('mouseleave', hideTooltip);
+                imageContainer.addEventListener('mousemove', () => {
+                    if (isHovered) {
+                        showTooltip(imageContainer, tooltipPath, item.name);
+                    }
+                });
+
+                imageContainer.addEventListener('mouseleave', () => {
+                    isHovered = false;
+                    hideTooltip();
+                });
 
                 imageContainer.appendChild(itemImage);
                 itemCard.appendChild(imageContainer);
