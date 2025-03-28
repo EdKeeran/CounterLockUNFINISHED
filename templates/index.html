@@ -274,23 +274,38 @@
             gap: 8px;
         }
         .hero-tag {
-            background: rgba(255, 255, 255, 0.15);
-            padding: 8px 12px;
-            border-radius: 8px;
-            font-size: 1.1em;
-            color: #ffffff;
             display: flex;
             align-items: center;
-            gap: 10px;
-            font-family: 'Forevs', sans-serif;
-            font-weight: bold;
-            text-transform: uppercase;
+            gap: 8px;
+            margin: 4px 0;
+            padding: 4px;
+            border-radius: 4px;
+            background: rgba(0, 0, 0, 0.2);
         }
+        
         .hero-tag img {
-            width: 40px;
-            height: 40px;
-            border-radius: 6px;
-            border: 2px solid rgba(255, 255, 255, 0.2);
+            width: 24px;
+            height: 24px;
+            border-radius: 4px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .hero-tag-content {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+            flex: 1;
+        }
+
+        .hero-name {
+            font-weight: bold;
+            font-size: 0.9em;
+        }
+
+        .counter-reason {
+            font-size: 0.8em;
+            opacity: 0.9;
+            font-style: italic;
         }
         .item-card.weaponitems {
             background: #DD9642;
@@ -567,7 +582,7 @@
                     heroImg.onerror = () => { heroImg.src = '/static/images/heroes/placeholder.png'; };
 
                     const heroName = document.createElement('span');
-                    heroName.textContent = hero.name;
+                    heroName.textContent = hero.name + (hero.counter_reason ? ` - ${hero.counter_reason}` : '');
 
                     heroTag.appendChild(heroImg);
                     heroTag.appendChild(heroName);

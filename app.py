@@ -76,67 +76,48 @@ def get_heroes():
     } for h in heroes])
 
 @app.route('/api/team_analysis', methods=['POST'])
-def analyze_teams():
-    enemy_team = request.json.get('enemy_team', [])
-    
-    print(f"Analyzing enemy team: {enemy_team}")
-    
-    # Get all heroes
-    heroes = {h.id: h for h in Hero.query.all()}
-    items = {i.name: i for i in Item.query.all()}
-    
-    print(f"Found {len(heroes)} heroes and {len(items)} items in database")
-    
-    # Organize counters by item instead of by hero
-    item_analysis = {}
-    
+def analyze_team():
     try:
+        data = request.get_json()
+        enemy_team = data.get('enemy_team', [])
+        
+        if not enemy_team:
+            return jsonify({'error': 'No enemy team provided'})
+            
+        # Get all counter items for each enemy hero
+        item_analysis = {}
         for hero_id in enemy_team:
-            hero = heroes.get(hero_id)
-            if not hero:
-                continue
-                
-            print(f"\nAnalyzing enemy hero: {hero.name}")
-            
-            # Get counter items from Google Sheets
-            sheet_items = get_hero_counters(hero.name)
-            print(f"Found {len(sheet_items)} counter items for {hero.name} in sheet")
-            
-            for item_name in sheet_items:
-                if item_name in items:
-                    item = items[item_name]
+            hero = Hero.query.get(hero_id)
+            if hero:
+                counter_items = get_hero_counters(hero.name)
+                for counter_info in counter_items:
+                    item_name = counter_info['item']
+                    counter_reason = counter_info['reason']
                     if item_name not in item_analysis:
-                        item_analysis[item_name] = {
-                            'id': item.id,
-                            'name': item.name,
-                            'category': item.category,
-                            'image_path': url_for('static', filename=item.image_path),
-                            'countered_heroes': []
-                        }
-                    item_analysis[item_name]['countered_heroes'].append({
-                        'id': hero.id,
-                        'name': hero.name,
-                        'image_path': url_for('static', filename=hero.image_path)
-                    })
+                        item = Item.query.filter_by(name=item_name).first()
+                        if item:
+                            item_analysis[item_name] = {
+                                'name': item.name,
+                                'image_path': url_for('static', filename=item.image_path),
+                                'category': item.category,
+                                'countered_heroes': []
+                            }
+                    if item_name in item_analysis:
+                        item_analysis[item_name]['countered_heroes'].append({
+                            'name': hero.name,
+                            'image_path': url_for('static', filename=hero.image_path),
+                            'counter_reason': counter_reason
+                        })
         
         # Convert to list and sort by number of heroes countered
-        sorted_items = []
-        for item_data in item_analysis.values():
-            if len(item_data['countered_heroes']) >= 2:  # Only include items that counter 2+ heroes
-                sorted_items.append(item_data)
+        item_analysis_list = list(item_analysis.values())
+        item_analysis_list.sort(key=lambda x: len(x['countered_heroes']), reverse=True)
         
-        sorted_items.sort(key=lambda x: (-len(x['countered_heroes']), x['name']))
+        return jsonify({'item_analysis': item_analysis_list})
         
-        print("\nSending analysis response")
-        return jsonify({
-            'item_analysis': sorted_items
-        })
     except Exception as e:
-        print(f"Error in analyze_teams: {str(e)}")
-        return jsonify({
-            'error': 'An error occurred while analyzing teams',
-            'item_analysis': []
-        }), 500
+        print(f"Error in analyze_team: {str(e)}")
+        return jsonify({'error': str(e)})
 
 # Initialize database when starting the app
 init_db()

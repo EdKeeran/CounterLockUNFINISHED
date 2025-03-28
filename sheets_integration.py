@@ -67,16 +67,23 @@ def get_hero_counters(hero_name):
         service = build('sheets', 'v4', credentials=creds)
         sheet = service.spreadsheets()
         
-        # Get data from the CounterItems sheet
-        range_name = 'CounterItems!A:B'
+        # Get data from the CounterItems sheet, including counter reason
+        range_name = 'CounterItems!A:C'  # Updated to include column C
         result = sheet.values().get(
             spreadsheetId=SPREADSHEET_ID,
             range=range_name
         ).execute()
         
-        # Extract counter items for this hero
+        # Extract counter items and reasons for this hero
         values = result.get('values', [])[1:]  # Skip header row
-        counter_items = [row[1] for row in values if len(row) > 1 and row[0] == hero_name]
+        counter_items = []
+        for row in values:
+            if len(row) > 1 and row[0] == hero_name:
+                counter_info = {
+                    'item': row[1],
+                    'reason': row[2] if len(row) > 2 else ''  # Get reason if available
+                }
+                counter_items.append(counter_info)
         
         # Cache the results
         cache[cache_key] = counter_items
